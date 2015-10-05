@@ -1,0 +1,29 @@
+{
+  "name": "ult-twiclient",
+  "version": "1.0.0",
+  "description": "ultimate twitter client",
+  "main": "main.js",
+  "dependencies": {
+    "electron-compile": "^1.0.0"
+  },
+  "devDependencies": {
+    "electron-compilers": "^1.0.0",
+    "electron-packager": "^5.1.0",
+    "electron-prebuilt": "^0.33.6"
+  },
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-packager . ult-twiclient --platform=win32 --arch=all --version=0.33.0 --overwrite --out=build --asar",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kmc-jp/ult-twiclient.git"
+  },
+  "author": "KMC",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kmc-jp/ult-twiclient/issues"
+  },
+  "homepage": "https://github.com/kmc-jp/ult-twiclient#readme"
+}
