@@ -1,0 +1,2 @@
+(()=>document.write("<p>kmc")
+)()
