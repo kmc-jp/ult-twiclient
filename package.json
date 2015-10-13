@@ -2,7 +2,7 @@
   "name": "ult-twiclient",
   "version": "1.0.0",
   "description": "ultimate twitter client",
-  "main": "main.js",
+  "main": "init.js",
   "dependencies": {
     "electron-compile": "^1.0.0"
   },
