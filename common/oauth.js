@@ -13,7 +13,7 @@ const oauth = new Oauth({
 console.log("saitama");
 var requestToken, requestTokenSecret;
 export default {getOauthUrl, getApi};
-export function getOauthUrl(){
+function getOauthUrl(){
   console.log("getOauth");
   return new Promise((resolve, reject)=>{
     oauth.getRequestToken((error, _requestToken, _requestTokenSecret, results)=>{
@@ -28,7 +28,7 @@ export function getOauthUrl(){
     });
   });
 };
-export function getApi(oauth_verifier){
+function getApi(oauth_verifier){
   console.log("getApi");
   return new Promise((resolve, reject)=>{
   oauth.getAccessToken(requestToken, requestTokenSecret, oauth_verifier,
