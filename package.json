@@ -4,12 +4,16 @@
   "description": "ultimate twitter client",
   "main": "init.js",
   "dependencies": {
-    "electron-compile": "^1.0.0"
+    "electron-compile": "^1.0.0",
+    "flutter": "0.0.5",
+    "node-twitter-api": "^1.6.1",
+    "request": "^2.65.0",
+    "twitter": "^1.2.5"
   },
   "devDependencies": {
     "electron-compilers": "^1.0.0",
     "electron-packager": "^5.1.0",
-    "electron-prebuilt": "^0.33.6"
+    "electron-prebuilt": "^0.34.0"
   },
   "scripts": {
     "start": "electron .",

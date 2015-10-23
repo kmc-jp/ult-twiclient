@@ -1,13 +1,6 @@
 var app = require('app');  // Module to control application life.
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
-var Oauth = require('twitter-oauth')({
-    consumerKey: "STEtjjUGjw5bhdCjE1bdRxMh3", /* per appication - create a comsumer key here: https://dev.twitter.com/apps */
-    // domain: 'YOUR DOMAIN HERE',
-    consumerSecret: "B3mvDiqXsCp8xkoi4Fa8WlIKqzNA2mePSic5BSP0kBGW3SdmLj",
-    // loginCallback: "http://yourdomain.com/twitter/sessions/callback",  /* internal */
-    // completeCallback:  "http://yourdomain.com/search/beagles"  /* When oauth has finished - where should we take the user too */
-});
-
+var ipc = require('ipc');
 // Report crashes to our server.
 require('crash-reporter').start();
 
