@@ -12,7 +12,7 @@ const oauth = new Oauth({
 
 console.log("saitama");
 var requestToken, requestTokenSecret;
-export default {getOauthUrl, getApi};
+export default {getOauthUrl, getTokens, getApi};
 function getOauthUrl(){
   console.log("getOauth");
   return new Promise((resolve, reject)=>{
@@ -28,36 +28,39 @@ function getOauthUrl(){
     });
   });
 };
-function getApi(oauth_verifier){
-  console.log("getApi");
+function getTokens(oauth_verifier){
   return new Promise((resolve, reject)=>{
-  oauth.getAccessToken(requestToken, requestTokenSecret, oauth_verifier,
-    (error, accessToken, accessTokenSecret, results)=>{
-      console.log("getAccessToken");
-      if (error) {
-        console.error("Error accessToken", error);
-        reject("error accessToken: "+error);
-      } else {
-          console.log("verifyCredentials");
-        oauth.verifyCredentials(accessToken, accessTokenSecret,
-          (error, data, response)=>{
-            if (error) {
-              console.error("Error Credentials", error);
-              reject("error Credentials: "+error);
-            } else {
-              console.log(accessToken, accessTokenSecret);
-              console.log(data["screen_name"]);
-              var config = {
-                consumer_key: consumerKey,
-                consumer_secret: consumerSecret,
-                access_token_key: accessToken,
-                access_token_secret: accessTokenSecret
-              };
-              resolve(new Twitter(config));
+    oauth.getAccessToken(requestToken, requestTokenSecret, oauth_verifier,
+      (error, accessToken, accessTokenSecret, results)=>{
+        console.log("getAccessToken");
+        if (error) {
+          console.error("Error accessToken", error);
+          reject("error accessToken: "+error);
+        } else {
+            console.log("verifyCredentials");
+          oauth.verifyCredentials(accessToken, accessTokenSecret,
+            (error, data, response)=>{
+              if (error) {
+                console.error("Error Credentials", error);
+                reject("error Credentials: "+error);
+              } else {
+                console.log(accessToken, accessTokenSecret);
+                console.log(data["screen_name"]);
+                var tokens = {
+                  consumer_key: consumerKey,
+                  consumer_secret: consumerSecret,
+                  access_token_key: accessToken,
+                  access_token_secret: accessTokenSecret
+                };
+                resolve(tokens);
+              }
             }
-          }
-        );
+          );
+        }
       }
-    });
+    );
   });
+}
+function getApi(tokens){
+  return new Twitter(tokens);
 };

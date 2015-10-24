@@ -1,6 +1,6 @@
 import remote from 'remote';
 const BrowserWindow = remote.require('browser-window');
-const {getOauthUrl,  getApi} = remote.require('./common/oauth');
+const {getOauthUrl, getTokens, getApi} = remote.require('./common/oauth');
 
 window.addEventListener('load', main);
 
@@ -12,13 +12,18 @@ function main(){
             pinForm  = document.getElementById('oauthFrom'),
             oauthWin = document.getElementById('oauthWin');
 
-      pinForm.addEventListener('submit', ()=>{
-
+      pinForm.addEventListener('submit', (event)=>{
+        event.preventDefault();
         console.info(pinInput.value);
-        getApi(pinInput.value).then((api)=>{
-            console.info(api);
+        getTokens(pinInput.value).then((tokens)=>{
+            console.info(tokens);
+            var setting = {
+              tokens
+            }
+            localStorage["ulttwiclient"] = JSON.stringify(setting);
+            console.log(localStorage["tokens"]);
+            console.log(getApi(tokens));
         },(reason)=>console.log('on submit',reason));
-        return false;
 
       })
       oauthWin.src = url;
