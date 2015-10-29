@@ -1,6 +1,4 @@
-import remote from 'remote';
-const BrowserWindow = remote.require('browser-window');
-const {getOauthUrl, getTokens, getApi} = remote.require('./common/oauth');
+import {getOauthUrl, getTokens, getApi} from '../common/oauth';
 
 window.addEventListener('load', main);
 
