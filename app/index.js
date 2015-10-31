@@ -1,5 +1,4 @@
-import remote from 'remote';
-const {getApi} = remote.require('./common/oauth');
+import {getApi} from '../common/oauth';
 var setting = JSON.parse(localStorage["ulttwiclient"]);
 console.log(setting.tokens)
 
