@@ -22,6 +22,20 @@ window.addEventListener('load',()=>{
         console.log('error', error.map((e)=>e.message).join("\n"),  error);
       }
     });
+    var inp_submitbox = document.getElementById("submitbox");
+    var btn_submitbtn = document.getElementById("submitbtn");
+    btn_submitbtn.addEventListener('click',()=>{
+      console.info(inp_submitbox.value);
+      api.post('statuses/update', {
+          status: inp_submitbox.value
+        },(error, tweet, response)=>{
+        if (!error) {
+          console.log(tweet, response);
+        } else {
+          console.log('error', error.map((e)=>e.message).join("\n"),  error);
+        }
+      });
+    });
   }else{
     console.warn("did not oauth");
   }
