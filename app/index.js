@@ -24,6 +24,7 @@ window.addEventListener('load',()=>{
     });
     var inp_submitbox = document.getElementById("submitbox");
     var btn_submitbtn = document.getElementById("submitbtn");
+    var btn_streambtn = document.getElementById("streambtn");
     btn_submitbtn.addEventListener('click',()=>{
       console.info(inp_submitbox.value);
       api.post('statuses/update', {
@@ -34,6 +35,15 @@ window.addEventListener('load',()=>{
         } else {
           console.log('error', error.map((e)=>e.message).join("\n"),  error);
         }
+      });
+    });
+    btn_streambtn.addEventListener('click',()=>{
+      console.info("start streaming");
+      api.stream('user', {}, (stream)=>{
+        stream.on('data', (tweet)=>{
+          console.log(tweet);
+          ul_tweet.appendChild(tiwdom(tweet));
+        });
       });
     });
   }else{
