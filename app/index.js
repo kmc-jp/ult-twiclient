@@ -2,10 +2,27 @@ import {getApi} from '../common/oauth';
 var setting = JSON.parse(localStorage["ulttwiclient"]);
 console.log(setting.tokens);
 
-function tiwdom(tweet){
-  var t = document.createElement("li");
-  t.innerText = tweet.text + "♥x" + tweet.favorite_count;
-  return t;
+function createTweetDom(tweet, api){
+  var dom_tweet = document.createElement("li");
+  var text_tweet = document.createElement("span");
+  var favorite_marker = document.createElement("span");
+  
+  text_tweet.textContent = tweet.text;
+  favorite_marker.textContent = (tweet.favorited ? "♥" : "♡") + tweet.favorite_count;
+  favorite_marker.addEventListener('click', ()=>{
+      console.log(tweet.id_str);
+    api.post('favorites/create', {id: tweet.id_str}, (error, _tweet, response)=>{
+      if (!error) {
+        console.log(_tweet, response);
+      } else {
+        console.log('error', error.map((e)=>e.message).join("\n"),  error);
+      }
+    });
+  });
+
+  dom_tweet.appendChild(text_tweet);
+  dom_tweet.appendChild(favorite_marker);
+  return dom_tweet;
 }
 window.addEventListener('load',()=>{
   if(setting.tokens){
@@ -16,7 +33,7 @@ window.addEventListener('load',()=>{
       if (!error) {
         console.log('tweets',tweets.map((t)=>t.text).join("\n"), tweets);
         tweets.forEach((tweet)=>{
-            ul_tweet.appendChild(tiwdom(tweet));
+          ul_tweet.appendChild(createTweetDom(tweet, api));
         });
       } else {
         console.log('error', error.map((e)=>e.message).join("\n"),  error);
