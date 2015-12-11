@@ -59,7 +59,7 @@ window.addEventListener('load',()=>{
       api.stream('user', {}, (stream)=>{
         stream.on('data', (tweet)=>{
           console.log(tweet);
-          ul_tweet.appendChild(tiwdom(tweet));
+          ul_tweet.insertBefore(createTweetDom(tweet, api), ul_tweet.firstChild);
         });
       });
     });
