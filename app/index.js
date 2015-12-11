@@ -58,8 +58,10 @@ window.addEventListener('load',()=>{
       console.info("start streaming");
       api.stream('user', {}, (stream)=>{
         stream.on('data', (tweet)=>{
-          console.log(tweet);
-          ul_tweet.insertBefore(createTweetDom(tweet, api), ul_tweet.firstChild);
+          if (!tweet.friends) {
+            console.log(tweet);
+            ul_tweet.insertBefore(createTweetDom(tweet, api), ul_tweet.firstChild);
+          }
         });
       });
     });
