@@ -10,10 +10,12 @@ function createTweetDom(tweet, api){
   text_tweet.textContent = tweet.text;
   favorite_marker.textContent = (tweet.favorited ? "♥" : "♡") + tweet.favorite_count;
   favorite_marker.addEventListener('click', ()=>{
+      var _this = favorite_marker;
       console.log(tweet.id_str);
     api.post('favorites/create', {id: tweet.id_str}, (error, _tweet, response)=>{
       if (!error) {
         console.log(_tweet, response);
+        _this.textContent = (_tweet.favorited ? "♥" : "♡") + (_tweet.favorite_count);
       } else {
         console.log('error', error.map((e)=>e.message).join("\n"),  error);
       }
