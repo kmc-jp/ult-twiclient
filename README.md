@@ -3,7 +3,8 @@
 
 ## 起動
 
-* ここを参考に[nodist](http://www.cyokodog.net/blog/first-node-js/) をインストール
+* [ここ](https://github.com/marcelklehr/nodist/releases)から nodist のインストーラーをダウンロードして実行
+* Git が使える端末上(Git Bash など)で `nodist update`
 * `cd *path*` 
 * `npm install`
 * `npm start` をすると起動! 
