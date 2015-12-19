@@ -1,0 +1,13 @@
+#tweets {
+  margin: 1em;
+  -webkit-margin-before: 0;
+  -webkit-margin-after: 0;
+  -webkit-padding-start: 0;
+}
+#tweets li {
+  list-style-type: none;
+  margin: 10px 5px;
+  border: solid hsl(188, 100%, 88%);
+  border-left: 3px;
+  border-bottom: 1px;
+}
