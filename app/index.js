@@ -8,7 +8,7 @@ function createTweetDom(tweet, api){
   var favorite_marker = document.createElement("span");
   
   text_tweet.textContent = tweet.text;
-  favorite_marker.textContent = (tweet.favorited ? "🍣" : "🍚") + tweet.favorite_count;
+  favorite_marker.textContent = (tweet.favorited ? "♥" : "♡") + tweet.favorite_count;
   favorite_marker.addEventListener('click', ()=>{
       console.log(tweet.id_str);
       var favorites_url = tweet.favorited ? 'favorites/destroy' : 'favorites/create';
@@ -16,7 +16,7 @@ function createTweetDom(tweet, api){
       if (!error) {
         console.log(_tweet, response);
         tweet.favorited = !tweet.favorited;
-        favorite_marker.textContent = (_tweet.favorited ? "🍣" : "🍚") + (_tweet.favorite_count);
+        favorite_marker.textContent = (_tweet.favorited ? "♥" : "♡") + (_tweet.favorite_count);
       } else {
         console.log('error', error.map((e)=>e.message).join("\n"),  error);
       }
