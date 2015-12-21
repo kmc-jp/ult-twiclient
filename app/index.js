@@ -6,7 +6,7 @@ function createTweetDom(tweet, api){
   var dom_tweet = document.createElement("li");
   var text_tweet = document.createElement("span");
   var favorite_marker = document.createElement("span");
-  
+
   text_tweet.textContent = tweet.text;
   favorite_marker.textContent = (tweet.favorited ? "♥" : "♡") + tweet.favorite_count;
   favorite_marker.addEventListener('click', ()=>{
@@ -58,7 +58,7 @@ window.addEventListener('load',()=>{
       console.info("start streaming");
       api.stream('user', {}, (stream)=>{
         stream.on('data', (tweet)=>{
-          if (!tweet.friends && !tweets.event) {
+          if (!tweet.friends && !tweets.event && !tweets.delete) {
             console.log(tweet);
             ul_tweet.insertBefore(createTweetDom(tweet, api), ul_tweet.firstChild);
           }
