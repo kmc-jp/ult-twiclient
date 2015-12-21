@@ -4,9 +4,11 @@ console.log(setting.tokens);
 
 function createTweetDom(tweet, api){
   var dom_tweet = document.createElement("li");
+  var dom_screen_name = document.createElement("span");
   var text_tweet = document.createElement("span");
   var favorite_marker = document.createElement("span");
-  
+
+  dom_screen_name.textContent = "@" + tweet.user.screen_name + ": ";
   text_tweet.textContent = tweet.text;
   favorite_marker.textContent = (tweet.favorited ? "🍣" : "🍚") + tweet.favorite_count;
   favorite_marker.addEventListener('click', ()=>{
@@ -23,6 +25,7 @@ function createTweetDom(tweet, api){
     });
   });
 
+  dom_tweet.appendChild(dom_screen_name);
   dom_tweet.appendChild(text_tweet);
   dom_tweet.appendChild(favorite_marker);
   return dom_tweet;
