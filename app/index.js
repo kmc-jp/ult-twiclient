@@ -57,6 +57,28 @@ window.addEventListener('load',()=>{
         }
       });
     });
+    function ctrlenter($) {
+	$(window).keydown(function(e) {
+	    if(event.ctrlKey) {
+		if(e.keyCode === 13) {
+		    alert("ctrl + enter");
+		    return false;
+		}
+	    }
+	});
+    });
+    sendtweet.addEventListener(ctrlenter,()=>{
+	console.inf(ctrlenter.value);
+	api.post('status/update', {
+	    status: ctrlenter.value
+	},(error, tweet, response)=>{
+	    if(!error) {
+		console.log(tweet, response);
+	    } else {
+		console.log('error',error.map((e)=>e.message).join(""\n), error);
+	    }
+        });
+    });
     btn_streambtn.addEventListener('click',()=>{
       console.info("start streaming");
       api.stream('user', {}, (stream)=>{
