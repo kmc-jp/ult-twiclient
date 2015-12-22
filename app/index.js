@@ -58,7 +58,7 @@ window.addEventListener('load',()=>{
       console.info("start streaming");
       api.stream('user', {}, (stream)=>{
         stream.on('data', (tweet)=>{
-          if (!tweet.friends && !tweet.event && !tweet.delete) {
+          if (!tweet.friends && !tweet.event && !tweet.delete && !tweet.scrub_geo && !tweet.limit && !tweet.disconnect && !tweet.waning) {
             console.log(tweet);
             ul_tweet.insertBefore(createTweetDom(tweet, api), ul_tweet.firstChild);
           }
