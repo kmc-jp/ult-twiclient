@@ -88,6 +88,14 @@ window.addEventListener('load',()=>{
             });
           }
         });
+        stream.on('follow', (data)=>{
+          if (data.target.screen_name === me.screen_name) {
+            var favoriteNotification = new Notification(data.source.name + " さんにフォローされました", {
+              body: data.source.description,
+              icon: data.source.profile_image_url_https
+            });
+          }
+        });
       });
     });
   }else{
