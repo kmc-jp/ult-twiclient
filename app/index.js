@@ -77,14 +77,16 @@ window.addEventListener('load',()=>{
         stream.on('favorite', (data)=>{
           if (data.target.screen_name === me.screen_name) {
             var favoriteNotification = new Notification("あなたのツイートがいいねされました", {
-              body: data.target_object.text
+              body: data.target_object.text,
+              icon: data.target.profile_image_url_https
             });
           }
         });
         stream.on('unfavorite', (data)=>{
           if (data.target.screen_name === me.screen_name) {
             var favoriteNotification = new Notification("あなたのツイートがいいね取り消しされました", {
-              body: data.target_object.text
+              body: data.target_object.text,
+              icon: data.target.profile_image_url_https
             });
           }
         });
