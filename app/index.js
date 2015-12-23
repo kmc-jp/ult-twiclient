@@ -6,7 +6,7 @@ function createTweetDom(tweet, api){
   var dom_tweet = document.createElement("li");
   var text_tweet = document.createElement("span");
   var favorite_marker = document.createElement("span");
-  
+
   text_tweet.textContent = tweet.text;
   favorite_marker.textContent = (tweet.favorited ? "🍣" : "🍚") + tweet.favorite_count;
   favorite_marker.addEventListener('click', ()=>{
@@ -84,7 +84,7 @@ window.addEventListener('load',()=>{
         });
         stream.on('unfavorite', (data)=>{
           if (data.target.screen_name === me.screen_name) {
-            var favoriteNotification = new Notification("あなたのツイートがいいね取り消しされました", {
+            var unfavoriteNotification = new Notification("あなたのツイートがいいね取り消しされました", {
               body: data.target_object.text,
               icon: data.target.profile_image_url_https
             });
@@ -92,7 +92,7 @@ window.addEventListener('load',()=>{
         });
         stream.on('follow', (data)=>{
           if (data.target.screen_name === me.screen_name) {
-            var favoriteNotification = new Notification(data.source.name + " さんにフォローされました", {
+            var followNotification = new Notification(data.source.name + " さんにフォローされました", {
               body: data.source.description,
               icon: data.source.profile_image_url_https
             });
