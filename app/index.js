@@ -57,10 +57,29 @@ window.addEventListener('load',()=>{
     btn_streambtn.addEventListener('click',()=>{
       console.info("start streaming");
       api.stream('user', {}, (stream)=>{
-        stream.on('data', (tweet)=>{
-          if (!tweet.friends && !tweet.event && !tweet.delete && !tweet.scrub_geo && !tweet.limit && !tweet.disconnect && !tweet.warning) {
-            console.log(tweet);
-            ul_tweet.insertBefore(createTweetDom(tweet, api), ul_tweet.firstChild);
+        stream.on('data', (data)=>{
+          console.log(data);
+          if (data.friends) {
+            return;
+          } else if (data.delete) {
+            // status deletion
+          } else if (data.scrub_geo) {
+            // location deletion
+          } else if (data.limit) {
+            // limit notices
+          } else if (data.status_withheld) {
+            // withheld content notices (status)
+          } else if (data.user_withheld) {
+            // withheld content notices (user)
+          } else if (data.disconnect) {
+            // disconnect messages
+          } else if (data.warning) {
+            // stall warnings
+          } else if (data.event) {
+            // catch some event
+          } else {
+            // status
+            ul_tweet.insertBefore(createTweetDom(data, api), ul_tweet.firstChild);
           }
         });
       });
