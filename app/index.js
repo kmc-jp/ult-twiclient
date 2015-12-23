@@ -9,6 +9,7 @@ function createTweetDom(tweet, api){
   var text_tweet = document.createElement("span");
   var favorite_marker = document.createElement("span");
 
+  profile_image.setAttribute("class", "user_icon");
   profile_image.setAttribute("src", tweet.user.profile_image_url);
   dom_screen_name.textContent = "@" + tweet.user.screen_name + ": ";
   text_tweet.textContent = tweet.text;
