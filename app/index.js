@@ -32,6 +32,14 @@ window.addEventListener('load',()=>{
     var api = getApi(setting.tokens);
     var params = {screen_name: 'wass80'};
     var ul_tweet = document.getElementById("tweets");
+    var me;
+    api.get('account/verify_credentials', {}, (error, data, response)=>{
+      if (!error) {
+        me = data;
+      } else {
+        console.log('error', error.map((e)=>e.message).join("\n"),  error);
+      }
+    });
     api.get('statuses/home_timeline', params, function(error, tweets, response){
       if (!error) {
         console.log('tweets',tweets.map((t)=>t.text).join("\n"), tweets);
@@ -64,6 +72,13 @@ window.addEventListener('load',()=>{
           if (!tweet.friends) {
             console.log(tweet);
             ul_tweet.insertBefore(createTweetDom(tweet, api), ul_tweet.firstChild);
+          }
+        });
+        stream.on('favorite', (data)=>{
+          if (data.target.screen_name === me.screen_name) {
+            var favoriteNotification = new Notification("あなたのツイートがいいねされました", {
+              body: data.target_object.text
+            });
           }
         });
       });
