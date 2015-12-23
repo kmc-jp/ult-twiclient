@@ -52,6 +52,7 @@ window.addEventListener('load',()=>{
         },(error, tweet, response)=>{
         if (!error) {
           console.log(tweet, response);
+          inp_submitbox.value = "";
         } else {
           console.log('error', error.map((e)=>e.message).join("\n"),  error);
         }
