@@ -81,6 +81,13 @@ window.addEventListener('load',()=>{
             });
           }
         });
+        stream.on('unfavorite', (data)=>{
+          if (data.target.screen_name === me.screen_name) {
+            var favoriteNotification = new Notification("あなたのツイートがいいね取り消しされました", {
+              body: data.target_object.text
+            });
+          }
+        });
       });
     });
   }else{
