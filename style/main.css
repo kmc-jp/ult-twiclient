@@ -7,7 +7,14 @@
 #tweets li {
   list-style-type: none;
   margin: 10px 5px;
-  border: solid hsl(188, 100%, 88%);
-  border-left: 3px;
-  border-bottom: 1px;
+  clear: both;
+  height: auto;
+}
+
+#tweets li:nth-child(2n+1) {
+  background-color: hsl(188, 100%, 88%);
+}
+
+img.user_icon {
+  float: left;
 }
