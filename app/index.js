@@ -101,7 +101,7 @@ window.addEventListener('load',()=>{
         stream.on('list_member_added', (data)=>{
           if (data.target.screen_name === me.screen_name) {
             var listAddNotification = new Notification(data.source.name + " さんにリスト "+data.target_object.name+" に追加されました", {
-              body: data.source.description,
+              body: data.target_object.description,
               icon: data.source.profile_image_url_https
             });
           }
