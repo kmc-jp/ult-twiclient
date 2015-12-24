@@ -27,6 +27,13 @@ function createTweetDom(tweet, api){
       }
     });
   });
+  profile_image.addEventListener('click', (evt)=>{
+    console.log(tweet.id_str);
+    document.getElementById("in_reply_to_status_id").value = tweet.id_str;
+    let submit_box = document.getElementById("submitbox");
+    submit_box.value = "@" + tweet.user.screen_name + " "
+    submit_box.focus();
+  });
 
   dom_tweet.appendChild(profile_image);
   dom_tweet.appendChild(dom_user_name);
@@ -52,14 +59,18 @@ window.addEventListener('load',()=>{
     var inp_submitbox = document.getElementById("submitbox");
     var btn_submitbtn = document.getElementById("submitbtn");
     var btn_streambtn = document.getElementById("streambtn");
+    var btn_clearreplybtn = document.getElementById("clear_reply_btn");
+    var in_reply_to_status_id_box = document.getElementById("in_reply_to_status_id");
     btn_submitbtn.addEventListener('click',()=>{
       console.info(inp_submitbox.value);
       api.post('statuses/update', {
-          status: inp_submitbox.value
+          status: inp_submitbox.value,
+          in_reply_to_status_id: in_reply_to_status_id_box.value
         },(error, tweet, response)=>{
         if (!error) {
           console.log(tweet, response);
           inp_submitbox.value = "";
+          in_reply_to_status_id_box.value = "";
         } else {
           console.log('error', error.map((e)=>e.message).join("\n"),  error);
         }
@@ -76,6 +87,10 @@ window.addEventListener('load',()=>{
           }
         });
       });
+    });
+    btn_clearreplybtn.addEventListener('click',()=>{
+      inp_submitbox.value = inp_submitbox.value.replace(/@[a-zA-Z0-9_]+/g, '');
+      in_reply_to_status_id_box.value = "";
     });
     btn_streambtn.click();
   }else{
