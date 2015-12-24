@@ -78,6 +78,7 @@ window.addEventListener('load',()=>{
     });
     btn_streambtn.addEventListener('click',()=>{
       console.info("start streaming");
+      btn_streambtn.setAttribute('disabled', 'disabled');
       api.stream('user', {}, (stream)=>{
         stream.on('data', (tweet)=>{
           if (!tweet.friends) {
@@ -91,6 +92,7 @@ window.addEventListener('load',()=>{
       inp_submitbox.value = inp_submitbox.value.replace(/@[a-zA-Z0-9_]+/g, '');
       in_reply_to_status_id_box.value = "";
     });
+    btn_streambtn.click();
   }else{
     console.warn("did not oauth");
   }
