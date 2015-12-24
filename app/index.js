@@ -62,6 +62,7 @@ window.addEventListener('load',()=>{
         if (!error) {
           console.log(tweet, response);
           inp_submitbox.value = "";
+          in_reply_to_status_id_box.value = "";
         } else {
           console.log('error', error.map((e)=>e.message).join("\n"),  error);
         }
