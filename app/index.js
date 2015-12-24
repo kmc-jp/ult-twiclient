@@ -67,6 +67,7 @@ window.addEventListener('load',()=>{
     });
     btn_streambtn.addEventListener('click',()=>{
       console.info("start streaming");
+      btn_streambtn.setAttribute('disabled', 'disabled');
       api.stream('user', {}, (stream)=>{
         stream.on('data', (tweet)=>{
           if (!tweet.friends) {
