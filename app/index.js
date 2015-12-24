@@ -76,6 +76,7 @@ window.addEventListener('load',()=>{
         });
       });
     });
+    btn_streambtn.click();
   }else{
     console.warn("did not oauth");
   }
