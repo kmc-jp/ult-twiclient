@@ -52,10 +52,12 @@ window.addEventListener('load',()=>{
     var inp_submitbox = document.getElementById("submitbox");
     var btn_submitbtn = document.getElementById("submitbtn");
     var btn_streambtn = document.getElementById("streambtn");
+    var in_reply_to_status_id_box = document.getElementById("in_reply_to_status_id");
     btn_submitbtn.addEventListener('click',()=>{
       console.info(inp_submitbox.value);
       api.post('statuses/update', {
-          status: inp_submitbox.value
+          status: inp_submitbox.value,
+          in_reply_to_status_id: in_reply_to_status_id_box.value
         },(error, tweet, response)=>{
         if (!error) {
           console.log(tweet, response);
