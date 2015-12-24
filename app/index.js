@@ -27,6 +27,13 @@ function createTweetDom(tweet, api){
       }
     });
   });
+  profile_image.addEventListener('click', (evt)=>{
+    console.log(tweet.id_str);
+    document.getElementById("in_reply_to_status_id").value = tweet.id_str;
+    let submit_box = document.getElementById("submitbox");
+    submit_box.value = "@" + tweet.user.screen_name + " "
+    submit_box.focus();
+  });
 
   dom_tweet.appendChild(profile_image);
   dom_tweet.appendChild(dom_user_name);
