@@ -59,6 +59,7 @@ window.addEventListener('load',()=>{
     var inp_submitbox = document.getElementById("submitbox");
     var btn_submitbtn = document.getElementById("submitbtn");
     var btn_streambtn = document.getElementById("streambtn");
+    var btn_clearreplybtn = document.getElementById("clear_reply_btn");
     var in_reply_to_status_id_box = document.getElementById("in_reply_to_status_id");
     btn_submitbtn.addEventListener('click',()=>{
       console.info(inp_submitbox.value);
@@ -85,6 +86,10 @@ window.addEventListener('load',()=>{
           }
         });
       });
+    });
+    btn_clearreplybtn.addEventListener('click',()=>{
+      inp_submitbox.value = inp_submitbox.value.replace(/@[a-zA-Z0-9_]+/g, '');
+      in_reply_to_status_id_box.value = "";
     });
   }else{
     console.warn("did not oauth");
