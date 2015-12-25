@@ -61,6 +61,7 @@ window.addEventListener('load',()=>{
     var btn_streambtn = document.getElementById("streambtn");
     var btn_clearreplybtn = document.getElementById("clear_reply_btn");
     var in_reply_to_status_id_box = document.getElementById("in_reply_to_status_id");
+    var char_counter = document.getElementById("char_counter");
     btn_submitbtn.addEventListener('click',()=>{
       console.info(inp_submitbox.value);
       api.post('statuses/update', {
@@ -93,6 +94,10 @@ window.addEventListener('load',()=>{
       in_reply_to_status_id_box.value = "";
     });
     btn_streambtn.click();
+    inp_submitbox.addEventListener('input', ()=>{
+      const max_tweet_length = 140;
+      char_counter.textContent = "残り " + (max_tweet_length - inp_submitbox.value.length) + "文字";
+    });
   }else{
     console.warn("did not oauth");
   }
