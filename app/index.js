@@ -49,11 +49,16 @@ function createNotification(title, body, icon) {
   notification.classList.add('notification');
   notification.textContent = title + " : " + body;
   notifier.appendChild(notification);
-  notification.addEventListener('click', ()=>{
-    notifier.removeChild(notification);
-  });
   const removeMSecond = 6000;
-  window.setTimeout(()=>{notifier.removeChild(notification);}, removeMSecond);
+  let autoremove = window.setTimeout(()=>{
+    notification.removeEventListener('click');
+    notification.parentNode.removeChild(notification);
+  }, removeMSecond);
+  notification.addEventListener('click', ()=>{
+    window.clearTimeout(autoremove);
+    notification.removeEventListener('click');
+    notification.parentNode.removeChild(notification);
+  });
   if (!remote.getCurrentWindow().isFocused()) {
     new Notification(title, {icon: icon, body: body});
   }
