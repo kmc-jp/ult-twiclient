@@ -10,9 +10,9 @@ body {
 }
 #tweets li {
   list-style-type: none;
-  margin: 10px 5px;
+  margin: 0px 5px;
   clear: both;
-  height: auto;
+  height: 75px;
 }
 
 #tweets li:nth-child(2n+1) {
