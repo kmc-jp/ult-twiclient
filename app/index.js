@@ -4,9 +4,14 @@ console.log(setting.tokens);
 
 function createTweetDom(tweet, api){
   var dom_tweet = document.createElement("li");
+  var profile_image = document.createElement("img");
+  var dom_user_name = document.createElement("div");
   var text_tweet = document.createElement("span");
   var favorite_marker = document.createElement("span");
-  
+
+  profile_image.setAttribute("class", "user_icon");
+  profile_image.setAttribute("src", tweet.user.profile_image_url);
+  dom_user_name.textContent = tweet.user.name + " @" + tweet.user.screen_name;
   text_tweet.textContent = tweet.text;
   favorite_marker.textContent = (tweet.favorited ? "🍣" : "🍚") + tweet.favorite_count;
   favorite_marker.addEventListener('click', ()=>{
@@ -22,7 +27,16 @@ function createTweetDom(tweet, api){
       }
     });
   });
+  profile_image.addEventListener('click', (evt)=>{
+    console.log(tweet.id_str);
+    document.getElementById("in_reply_to_status_id").value = tweet.id_str;
+    let submit_box = document.getElementById("submitbox");
+    submit_box.value = "@" + tweet.user.screen_name + " "
+    submit_box.focus();
+  });
 
+  dom_tweet.appendChild(profile_image);
+  dom_tweet.appendChild(dom_user_name);
   dom_tweet.appendChild(text_tweet);
   dom_tweet.appendChild(favorite_marker);
   return dom_tweet;
@@ -53,13 +67,18 @@ window.addEventListener('load',()=>{
     var inp_submitbox = document.getElementById("submitbox");
     var btn_submitbtn = document.getElementById("submitbtn");
     var btn_streambtn = document.getElementById("streambtn");
+    var btn_clearreplybtn = document.getElementById("clear_reply_btn");
+    var in_reply_to_status_id_box = document.getElementById("in_reply_to_status_id");
     btn_submitbtn.addEventListener('click',()=>{
       console.info(inp_submitbox.value);
       api.post('statuses/update', {
-          status: inp_submitbox.value
+          status: inp_submitbox.value,
+          in_reply_to_status_id: in_reply_to_status_id_box.value
         },(error, tweet, response)=>{
         if (!error) {
           console.log(tweet, response);
+          inp_submitbox.value = "";
+          in_reply_to_status_id_box.value = "";
         } else {
           console.log('error', error.map((e)=>e.message).join("\n"),  error);
         }
@@ -67,6 +86,7 @@ window.addEventListener('load',()=>{
     });
     btn_streambtn.addEventListener('click',()=>{
       console.info("start streaming");
+      btn_streambtn.setAttribute('disabled', 'disabled');
       api.stream('user', {}, (stream)=>{
         stream.on('data', (tweet)=>{
           if (!tweet.friends) {
@@ -100,6 +120,11 @@ window.addEventListener('load',()=>{
         });
       });
     });
+    btn_clearreplybtn.addEventListener('click',()=>{
+      inp_submitbox.value = inp_submitbox.value.replace(/@[a-zA-Z0-9_]+/g, '');
+      in_reply_to_status_id_box.value = "";
+    });
+    btn_streambtn.click();
   }else{
     console.warn("did not oauth");
   }
