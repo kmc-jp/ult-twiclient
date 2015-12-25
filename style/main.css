@@ -27,6 +27,7 @@ img.user_icon {
   position: fixed;
   top: 0;
   background-color: #ddd;
+  width: 100%;
   height: 75px;
 }
 
