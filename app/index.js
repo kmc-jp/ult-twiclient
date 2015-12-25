@@ -1,4 +1,5 @@
 import {getApi} from '../common/oauth';
+const remote = require('electron').remote;
 var setting = JSON.parse(localStorage["ulttwiclient"]);
 console.log(setting.tokens);
 
@@ -41,6 +42,23 @@ function createTweetDom(tweet, api){
   dom_tweet.appendChild(favorite_marker);
   return dom_tweet;
 }
+
+function createNotification(title, body, icon) {
+  let notifier = document.getElementById("notifier");
+  let notification = document.createElement("div");
+  notification.classList.add('notification');
+  notification.textContent = title + " : " + body;
+  notifier.appendChild(notification);
+  notification.addEventListener('click', ()=>{
+    notifier.removeChild(notification);
+  });
+  const removeMSecond = 6000;
+  window.setTimeout(()=>{notifier.removeChild(notification);}, removeMSecond);
+  if (!remote.getCurrentWindow().isFocused()) {
+    new Notification(title, {icon: icon, body: body});
+  }
+}
+
 window.addEventListener('load',()=>{
   if(setting.tokens){
     var api = getApi(setting.tokens);
@@ -96,26 +114,17 @@ window.addEventListener('load',()=>{
         });
         stream.on('favorite', (data)=>{
           if (data.target.screen_name === me.screen_name) {
-            var favoriteNotification = new Notification("あなたのツイートがいいねされました", {
-              body: data.target_object.text,
-              icon: data.target.profile_image_url_https
-            });
+            createNotification("あなたのツイートがいいねされました", data.target_object.text, data.target.profile_image_url_https);
           }
         });
         stream.on('unfavorite', (data)=>{
           if (data.target.screen_name === me.screen_name) {
-            var favoriteNotification = new Notification("あなたのツイートがいいね取り消しされました", {
-              body: data.target_object.text,
-              icon: data.target.profile_image_url_https
-            });
+            createNotification("あなたのツイートがいいね取り消しされました", data.target_object.text, data.target.profile_image_url_https);
           }
         });
         stream.on('follow', (data)=>{
           if (data.target.screen_name === me.screen_name) {
-            var favoriteNotification = new Notification(data.source.name + " さんにフォローされました", {
-              body: data.source.description,
-              icon: data.source.profile_image_url_https
-            });
+            createNotification(data.source.name + " さんにフォローされました", data.source.description, data.source.profile_image_url_https);
           }
         });
       });
