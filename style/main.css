@@ -33,3 +33,7 @@ img.user_icon {
 #outline {
   margin-top: 75px;
 }
+
+.retweeted_by {
+  text-align: right;
+}
