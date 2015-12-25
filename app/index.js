@@ -127,6 +127,11 @@ window.addEventListener('load',()=>{
             createNotification(data.source.name + " さんにフォローされました", data.source.description, data.source.profile_image_url_https);
           }
         });
+        stream.on('list_member_added', (data)=>{
+          if (data.target.screen_name === me.screen_name) {
+            createNotification(data.source.name + " さんにリスト "+data.target_object.name+" に追加されました", data.target_object.description, data.source.profile_image_url_https);
+          }
+        });
       });
     });
     btn_clearreplybtn.addEventListener('click',()=>{
