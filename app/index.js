@@ -4,6 +4,7 @@ console.log(setting.tokens);
 
 function createTweetDom(tweet, api){
   var dom_tweet = document.createElement("li");
+  var div_profile_image = document.createElement("div");
   var profile_image = document.createElement("img");
   var dom_user_name = document.createElement("div");
   var text_tweet = document.createElement("span");
@@ -45,7 +46,7 @@ function createTweetDom(tweet, api){
     submit_box.focus();
   });
 
-  dom_tweet.appendChild(profile_image);
+  dom_tweet.appendChild(div_profile_image);
   dom_tweet.appendChild(dom_user_name);
   dom_tweet.appendChild(text_tweet);
   dom_tweet.appendChild(favorite_marker);
@@ -77,6 +78,7 @@ window.addEventListener('load',()=>{
     var btn_streambtn = document.getElementById("streambtn");
     var btn_clearreplybtn = document.getElementById("clear_reply_btn");
     var in_reply_to_status_id_box = document.getElementById("in_reply_to_status_id");
+    var char_counter = document.getElementById("char_counter");
     btn_submitbtn.addEventListener('click',()=>{
       console.info(inp_submitbox.value);
       api.post('statuses/update', {
@@ -109,6 +111,16 @@ window.addEventListener('load',()=>{
       in_reply_to_status_id_box.value = "";
     });
     btn_streambtn.click();
+    inp_submitbox.addEventListener('input', ()=>{
+      const max_tweet_length = 140;
+      let remain = max_tweet_length - inp_submitbox.value.length;
+      char_counter.textContent = "残り " + remain + "文字";
+      if (remain < 0) {
+        btn_submitbtn.disabled = true;
+      } else {
+        btn_submitbtn.disabled = false;
+      }
+    });
   }else{
     console.warn("did not oauth");
   }
