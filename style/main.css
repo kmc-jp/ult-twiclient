@@ -51,7 +51,7 @@ img.user_icon {
 }
 
 .notification.follow {
-  background-color: hsl(100, 100%, 88%);
+  background-color: hsl(200, 100%, 88%);
 }
 
 @-webkit-keyframes show_notifier {
