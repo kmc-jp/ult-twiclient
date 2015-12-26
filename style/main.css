@@ -19,6 +19,10 @@ body {
   background-color: hsl(188, 100%, 88%);
 }
 
+#tweets li.retweeted_status {
+  background-color: hsl(100, 100%, 88%);
+}
+
 img.user_icon {
   float: left;
 }

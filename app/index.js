@@ -12,6 +12,7 @@ function createTweetDom(tweet, api){
   profile_image.setAttribute("class", "user_icon");
   if (tweet.retweeted_status) {
     let retweeted_status = tweet.retweeted_status;
+    dom_tweet.classList.add('retweeted_status');
     profile_image.setAttribute("src", retweeted_status.user.profile_image_url);
     dom_user_name.textContent = retweeted_status.user.name + " @" + tweet.user.screen_name;
     text_tweet.textContent = retweeted_status.text;
