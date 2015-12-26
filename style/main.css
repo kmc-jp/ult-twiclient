@@ -9,6 +9,7 @@ body {
   -webkit-padding-start: 0;
 }
 #tweets li {
+  font-size: 10pt;
   list-style-type: none;
   margin: 0px 5px;
   clear: both;
