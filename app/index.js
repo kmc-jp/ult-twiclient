@@ -4,13 +4,15 @@ console.log(setting.tokens);
 
 function createTweetDom(tweet, api){
   var dom_tweet = document.createElement("li");
+  var div_profile_image = document.createElement("div");
   var profile_image = document.createElement("img");
   var dom_user_name = document.createElement("div");
   var text_tweet = document.createElement("span");
   var favorite_marker = document.createElement("span");
 
-  profile_image.setAttribute("class", "user_icon");
   profile_image.setAttribute("src", tweet.user.profile_image_url);
+  div_profile_image.setAttribute("class", "user_icon");
+  div_profile_image.appendChild(profile_image);
   dom_user_name.textContent = tweet.user.name + " @" + tweet.user.screen_name;
   text_tweet.textContent = tweet.text;
   favorite_marker.textContent = (tweet.favorited ? "🍣" : "🍚") + tweet.favorite_count;
@@ -35,7 +37,7 @@ function createTweetDom(tweet, api){
     submit_box.focus();
   });
 
-  dom_tweet.appendChild(profile_image);
+  dom_tweet.appendChild(div_profile_image);
   dom_tweet.appendChild(dom_user_name);
   dom_tweet.appendChild(text_tweet);
   dom_tweet.appendChild(favorite_marker);
