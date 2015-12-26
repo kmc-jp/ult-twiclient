@@ -43,10 +43,11 @@ function createTweetDom(tweet, api){
   return dom_tweet;
 }
 
-function createNotification(title, body, icon) {
+function createNotification(title, body, icon, kind) {
   let notifier = document.getElementById("notifier");
   let notification = document.createElement("div");
   notification.classList.add('notification');
+  notification.classList.add(kind);
   notification.textContent = title + " : " + body;
   notifier.appendChild(notification);
   const removeMSecond = 6000;
@@ -119,22 +120,22 @@ window.addEventListener('load',()=>{
         });
         stream.on('favorite', (data)=>{
           if (data.target.screen_name === me.screen_name) {
-            createNotification("あなたのツイートがいいねされました", data.target_object.text, data.target.profile_image_url_https);
+            createNotification("あなたのツイートがいいねされました", data.target_object.text, data.target.profile_image_url_https, 'favorite');
           }
         });
         stream.on('unfavorite', (data)=>{
           if (data.target.screen_name === me.screen_name) {
-            createNotification("あなたのツイートがいいね取り消しされました", data.target_object.text, data.target.profile_image_url_https);
+            createNotification("あなたのツイートがいいね取り消しされました", data.target_object.text, data.target.profile_image_url_https, 'unfavorite');
           }
         });
         stream.on('follow', (data)=>{
           if (data.target.screen_name === me.screen_name) {
-            createNotification(data.source.name + " さんにフォローされました", data.source.description, data.source.profile_image_url_https);
+            createNotification(data.source.name + " さんにフォローされました", data.source.description, data.source.profile_image_url_https, 'follow');
           }
         });
         stream.on('list_member_added', (data)=>{
           if (data.target.screen_name === me.screen_name) {
-            createNotification(data.source.name + " さんにリスト "+data.target_object.name+" に追加されました", data.target_object.description, data.source.profile_image_url_https);
+            createNotification(data.source.name + " さんにリスト "+data.target_object.name+" に追加されました", data.target_object.description, data.source.profile_image_url_https, 'list_member_added');
           }
         });
       });

@@ -46,6 +46,14 @@ img.user_icon {
   -webkit-animation: show_notifier 0.5s forwards;
 }
 
+.notification.favorite {
+  background-color: hsl(60, 100%, 88%);
+}
+
+.notification.follow {
+  background-color: hsl(100, 100%, 88%);
+}
+
 @-webkit-keyframes show_notifier {
   0% { bottom: -2em; }
   100% { bottom: 0; }
