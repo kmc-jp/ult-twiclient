@@ -1,4 +1,5 @@
 import {getApi} from '../common/oauth';
+const remote = require('electron').remote;
 var setting = JSON.parse(localStorage["ulttwiclient"]);
 console.log(setting.tokens);
 
@@ -43,11 +44,42 @@ function createTweetDom(tweet, api){
   dom_tweet.appendChild(favorite_marker);
   return dom_tweet;
 }
+
+function createNotification(title, body, icon, kind) {
+  let notifier = document.getElementById("notifier");
+  let notification = document.createElement("div");
+  notification.classList.add('notification');
+  notification.classList.add(kind);
+  notification.textContent = title + " : " + body;
+  notifier.appendChild(notification);
+  const removeMSecond = 6000;
+  let autoremove = window.setTimeout(()=>{
+    notification.removeEventListener('click');
+    notification.parentNode.removeChild(notification);
+  }, removeMSecond);
+  notification.addEventListener('click', ()=>{
+    window.clearTimeout(autoremove);
+    notification.removeEventListener('click');
+    notification.parentNode.removeChild(notification);
+  });
+  if (!remote.getCurrentWindow().isFocused()) {
+    new Notification(title, {icon: icon, body: body});
+  }
+}
+
 window.addEventListener('load',()=>{
   if(setting.tokens){
     var api = getApi(setting.tokens);
     var params = {screen_name: 'wass80'};
     var ul_tweet = document.getElementById("tweets");
+    var me;
+    api.get('account/verify_credentials', {}, (error, data, response)=>{
+      if (!error) {
+        me = data;
+      } else {
+        console.log('error', error.map((e)=>e.message).join("\n"),  error);
+      }
+    });
     api.get('statuses/home_timeline', params, function(error, tweets, response){
       if (!error) {
         console.log('tweets',tweets.map((t)=>t.text).join("\n"), tweets);
@@ -87,6 +119,26 @@ window.addEventListener('load',()=>{
           if (!tweet.friends) {
             console.log(tweet);
             ul_tweet.insertBefore(createTweetDom(tweet, api), ul_tweet.firstChild);
+          }
+        });
+        stream.on('favorite', (data)=>{
+          if (data.target.screen_name === me.screen_name) {
+            createNotification("あなたのツイートがいいねされました", data.target_object.text, data.target.profile_image_url_https, 'favorite');
+          }
+        });
+        stream.on('unfavorite', (data)=>{
+          if (data.target.screen_name === me.screen_name) {
+            createNotification("あなたのツイートがいいね取り消しされました", data.target_object.text, data.target.profile_image_url_https, 'unfavorite');
+          }
+        });
+        stream.on('follow', (data)=>{
+          if (data.target.screen_name === me.screen_name) {
+            createNotification(data.source.name + " さんにフォローされました", data.source.description, data.source.profile_image_url_https, 'follow');
+          }
+        });
+        stream.on('list_member_added', (data)=>{
+          if (data.target.screen_name === me.screen_name) {
+            createNotification(data.source.name + " さんにリスト "+data.target_object.name+" に追加されました", data.target_object.description, data.source.profile_image_url_https, 'list_member_added');
           }
         });
       });
