@@ -9,24 +9,27 @@ body {
   -webkit-padding-start: 0;
 }
 #tweets li {
+  font-size: 10pt;
   list-style-type: none;
-  margin: 10px 5px;
+  margin: 0px 5px;
   clear: both;
-  height: auto;
+  height: 90px;
 }
 
 #tweets li:nth-child(2n+1) {
   background-color: hsl(188, 100%, 88%);
 }
 
-img.user_icon {
+.user_icon {
   float: left;
+  margin-right: 0.5em;
 }
 
 #topbar {
   position: fixed;
   top: 0;
   background-color: #ddd;
+  width: 100%;
   height: 75px;
 }
 
