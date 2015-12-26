@@ -22,6 +22,7 @@ body {
 
 .user_icon {
   float: left;
+  margin-right: 0.5em;
 }
 
 #topbar {
