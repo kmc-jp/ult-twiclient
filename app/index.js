@@ -16,6 +16,9 @@ function createTweetDom(tweet, api){
   div_profile_image.appendChild(profile_image);
   dom_user_name.textContent = tweet.user.name + " @" + tweet.user.screen_name;
   text_tweet.textContent = tweet.text;
+  tweet.entities.urls.forEach((url)=>{
+    text_tweet.textContent = text_tweet.textContent.replace(url.url, url.display_url);
+  });
   favorite_marker.textContent = (tweet.favorited ? "🍣" : "🍚") + tweet.favorite_count;
   favorite_marker.addEventListener('click', ()=>{
       console.log(tweet.id_str);
