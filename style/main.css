@@ -27,6 +27,23 @@ body {
 .photo_thumbnail {
   width: 80px;
   height: 80px;
+  cursor: pointer;
+}
+
+#image_view {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+#image_view img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .user_icon {

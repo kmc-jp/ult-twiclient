@@ -3,6 +3,22 @@ const remote = require('electron').remote;
 var setting = JSON.parse(localStorage["ulttwiclient"]);
 console.log(setting.tokens);
 
+function showImage(url, size) {
+  var dom_body = document.getElementsByTagName("body")[0];
+  var dom_image_view = document.createElement("div");
+  dom_image_view.id = "image_view";
+  var dom_image = document.createElement("img");
+  dom_image.setAttribute("src", url);
+  dom_image.setAttribute("width", size.w);
+  dom_image.setAttribute("height", size.h);
+  dom_image_view.appendChild(dom_image);
+  dom_image_view.addEventListener('click', ()=>{
+    dom_image_view.parentNode.removeChild(dom_image_view);
+    dom_image_view.removeEventListener('click');
+  });
+  dom_body.appendChild(dom_image_view);
+}
+
 function createTweetDom(tweet, api){
   var dom_tweet = document.createElement("li");
   var div_profile_image = document.createElement("div");
@@ -27,6 +43,9 @@ function createTweetDom(tweet, api){
         let thumbnail = document.createElement("img");
         thumbnail.setAttribute("src", m.media_url);
         thumbnail.classList.add("photo_thumbnail");
+        thumbnail.addEventListener('click', ()=>{
+          showImage(m.media_url, m.sizes.small);
+        });
         dom_thumbnails.appendChild(thumbnail);
       }
     });
