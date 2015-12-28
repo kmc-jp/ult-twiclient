@@ -3,6 +3,22 @@ const remote = require('electron').remote;
 var setting = JSON.parse(localStorage["ulttwiclient"]);
 console.log(setting.tokens);
 
+function showImage(url, size) {
+  var dom_body = document.getElementsByTagName("body")[0];
+  var dom_image_view = document.createElement("div");
+  dom_image_view.id = "image_view";
+  var dom_image = document.createElement("img");
+  dom_image.setAttribute("src", url);
+  dom_image.setAttribute("width", size.w);
+  dom_image.setAttribute("height", size.h);
+  dom_image_view.appendChild(dom_image);
+  dom_image_view.addEventListener('click', ()=>{
+    dom_image_view.parentNode.removeChild(dom_image_view);
+    dom_image_view.removeEventListener('click');
+  });
+  dom_body.appendChild(dom_image_view);
+}
+
 function createTweetDom(tweet, api){
   var dom_tweet = document.createElement("li");
   var div_profile_image = document.createElement("div");
@@ -10,12 +26,30 @@ function createTweetDom(tweet, api){
   var dom_user_name = document.createElement("div");
   var text_tweet = document.createElement("span");
   var favorite_marker = document.createElement("span");
+  var dom_thumbnails = document.createElement("div");
 
   profile_image.setAttribute("src", tweet.user.profile_image_url);
   div_profile_image.setAttribute("class", "user_icon");
   div_profile_image.appendChild(profile_image);
   dom_user_name.textContent = tweet.user.name + " @" + tweet.user.screen_name;
   text_tweet.textContent = tweet.text;
+  tweet.entities.urls.forEach((url)=>{
+    text_tweet.textContent = text_tweet.textContent.replace(url.url, url.display_url);
+  });
+  if (tweet.entities.media) {
+    dom_tweet.classList.add("with_photo_thumbnails");
+    tweet.extended_entities.media.forEach((m)=>{
+      if (m.type === "photo") {
+        let thumbnail = document.createElement("img");
+        thumbnail.setAttribute("src", m.media_url);
+        thumbnail.classList.add("photo_thumbnail");
+        thumbnail.addEventListener('click', ()=>{
+          showImage(m.media_url, m.sizes.small);
+        });
+        dom_thumbnails.appendChild(thumbnail);
+      }
+    });
+  }
   favorite_marker.textContent = (tweet.favorited ? "🍣" : "🍚") + tweet.favorite_count;
   favorite_marker.addEventListener('click', ()=>{
       console.log(tweet.id_str);
@@ -42,6 +76,7 @@ function createTweetDom(tweet, api){
   dom_tweet.appendChild(dom_user_name);
   dom_tweet.appendChild(text_tweet);
   dom_tweet.appendChild(favorite_marker);
+  dom_tweet.appendChild(dom_thumbnails);
   return dom_tweet;
 }
 
