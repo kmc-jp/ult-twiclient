@@ -26,8 +26,7 @@ function createTweetDom(tweet, api){
       if (m.type === "photo") {
         let thumbnail = document.createElement("img");
         thumbnail.setAttribute("src", m.media_url);
-        thumbnail.setAttribute("width", m.sizes.thumb.w);
-        thumbnail.setAttribute("height", m.sizes.thumb.h);
+        thumbnail.classList.add("photo_thumbnail");
         dom_thumbnails.appendChild(thumbnail);
       }
     });

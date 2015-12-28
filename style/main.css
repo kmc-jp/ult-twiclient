@@ -21,7 +21,12 @@ body {
 }
 
 #tweets li.with_photo_thumbnails {
-  min-height: 240px;
+  min-height: 160px;
+}
+
+.photo_thumbnail {
+  width: 80px;
+  height: 80px;
 }
 
 .user_icon {
