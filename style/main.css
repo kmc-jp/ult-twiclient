@@ -20,8 +20,13 @@ body {
   background-color: hsl(188, 100%, 88%);
 }
 
+#tweets li.with_photo_thumbnails {
+  height: 240px;
+}
+
 .user_icon {
   float: left;
+  height: 100%;
   margin-right: 0.5em;
 }
 

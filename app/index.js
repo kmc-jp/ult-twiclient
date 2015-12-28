@@ -10,6 +10,7 @@ function createTweetDom(tweet, api){
   var dom_user_name = document.createElement("div");
   var text_tweet = document.createElement("span");
   var favorite_marker = document.createElement("span");
+  var dom_thumbnails = document.createElement("div");
 
   profile_image.setAttribute("src", tweet.user.profile_image_url);
   div_profile_image.setAttribute("class", "user_icon");
@@ -19,6 +20,18 @@ function createTweetDom(tweet, api){
   tweet.entities.urls.forEach((url)=>{
     text_tweet.textContent = text_tweet.textContent.replace(url.url, url.display_url);
   });
+  if (tweet.entities.media) {
+    dom_tweet.classList.add("with_photo_thumbnails");
+    tweet.entities.media.forEach((m)=>{
+      if (m.type === "photo") {
+        let thumbnail = document.createElement("img");
+        thumbnail.setAttribute("src", m.media_url);
+        thumbnail.setAttribute("width", m.sizes.thumb.w);
+        thumbnail.setAttribute("height", m.sizes.thumb.h);
+        dom_thumbnails.appendChild(thumbnail);
+      }
+    });
+  }
   favorite_marker.textContent = (tweet.favorited ? "🍣" : "🍚") + tweet.favorite_count;
   favorite_marker.addEventListener('click', ()=>{
       console.log(tweet.id_str);
@@ -45,6 +58,7 @@ function createTweetDom(tweet, api){
   dom_tweet.appendChild(dom_user_name);
   dom_tweet.appendChild(text_tweet);
   dom_tweet.appendChild(favorite_marker);
+  dom_tweet.appendChild(dom_thumbnails);
   return dom_tweet;
 }
 
