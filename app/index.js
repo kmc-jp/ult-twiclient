@@ -22,7 +22,7 @@ function createTweetDom(tweet, api){
   });
   if (tweet.entities.media) {
     dom_tweet.classList.add("with_photo_thumbnails");
-    tweet.entities.media.forEach((m)=>{
+    tweet.extended_entities.media.forEach((m)=>{
       if (m.type === "photo") {
         let thumbnail = document.createElement("img");
         thumbnail.setAttribute("src", m.media_url);
