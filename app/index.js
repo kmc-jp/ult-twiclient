@@ -1,6 +1,23 @@
 import {getApi} from '../common/oauth';
+const remote = require('electron').remote;
 var setting = JSON.parse(localStorage["ulttwiclient"]);
 console.log(setting.tokens);
+
+function showImage(url, size) {
+  var dom_body = document.getElementsByTagName("body")[0];
+  var dom_image_view = document.createElement("div");
+  dom_image_view.id = "image_view";
+  var dom_image = document.createElement("img");
+  dom_image.setAttribute("src", url);
+  dom_image.setAttribute("width", size.w);
+  dom_image.setAttribute("height", size.h);
+  dom_image_view.appendChild(dom_image);
+  dom_image_view.addEventListener('click', ()=>{
+    dom_image_view.parentNode.removeChild(dom_image_view);
+    dom_image_view.removeEventListener('click');
+  });
+  dom_body.appendChild(dom_image_view);
+}
 
 function createTweetDom(tweet, api){
   var dom_tweet = document.createElement("li");
@@ -9,6 +26,7 @@ function createTweetDom(tweet, api){
   var dom_user_name = document.createElement("div");
   var text_tweet = document.createElement("span");
   var favorite_marker = document.createElement("span");
+  var dom_thumbnails = document.createElement("div");
 
   profile_image.setAttribute("class", "user_icon");
   if (tweet.retweeted_status) {
@@ -23,6 +41,25 @@ function createTweetDom(tweet, api){
     dom_user_name.textContent = tweet.user.name + " @" + tweet.user.screen_name;
     text_tweet.textContent = tweet.text;
     favorite_marker.textContent = (tweet.favorited ? "🍣" : "🍚") + tweet.favorite_count;
+  }
+  div_profile_image.setAttribute("class", "user_icon");
+  div_profile_image.appendChild(profile_image);
+  tweet.entities.urls.forEach((url)=>{
+    text_tweet.textContent = text_tweet.textContent.replace(url.url, url.display_url);
+  });
+  if (tweet.entities.media) {
+    dom_tweet.classList.add("with_photo_thumbnails");
+    tweet.extended_entities.media.forEach((m)=>{
+      if (m.type === "photo") {
+        let thumbnail = document.createElement("img");
+        thumbnail.setAttribute("src", m.media_url);
+        thumbnail.classList.add("photo_thumbnail");
+        thumbnail.addEventListener('click', ()=>{
+          showImage(m.media_url, m.sizes.small);
+        });
+        dom_thumbnails.appendChild(thumbnail);
+      }
+    });
   }
   favorite_marker.addEventListener('click', ()=>{
     console.log(tweet.id_str);
@@ -56,13 +93,45 @@ function createTweetDom(tweet, api){
     dom_retweeted.textContent = "retweeted by @" + tweet.user.screen_name;
     dom_tweet.appendChild(dom_retweeted);
   }
+  dom_tweet.appendChild(dom_thumbnails);
   return dom_tweet;
 }
+
+function createNotification(title, body, icon, kind) {
+  let notifier = document.getElementById("notifier");
+  let notification = document.createElement("div");
+  notification.classList.add('notification');
+  notification.classList.add(kind);
+  notification.textContent = title + " : " + body;
+  notifier.appendChild(notification);
+  const removeMSecond = 6000;
+  let autoremove = window.setTimeout(()=>{
+    notification.removeEventListener('click');
+    notification.parentNode.removeChild(notification);
+  }, removeMSecond);
+  notification.addEventListener('click', ()=>{
+    window.clearTimeout(autoremove);
+    notification.removeEventListener('click');
+    notification.parentNode.removeChild(notification);
+  });
+  if (!remote.getCurrentWindow().isFocused()) {
+    new Notification(title, {icon: icon, body: body});
+  }
+}
+
 window.addEventListener('load',()=>{
   if(setting.tokens){
     var api = getApi(setting.tokens);
     var params = {screen_name: 'wass80'};
     var ul_tweet = document.getElementById("tweets");
+    var me;
+    api.get('account/verify_credentials', {}, (error, data, response)=>{
+      if (!error) {
+        me = data;
+      } else {
+        console.log('error', error.map((e)=>e.message).join("\n"),  error);
+      }
+    });
     api.get('statuses/home_timeline', params, function(error, tweets, response){
       if (!error) {
         console.log('tweets',tweets.map((t)=>t.text).join("\n"), tweets);
@@ -102,6 +171,26 @@ window.addEventListener('load',()=>{
           if (!tweet.friends) {
             console.log(tweet);
             ul_tweet.insertBefore(createTweetDom(tweet, api), ul_tweet.firstChild);
+          }
+        });
+        stream.on('favorite', (data)=>{
+          if (data.target.screen_name === me.screen_name) {
+            createNotification("あなたのツイートがいいねされました", data.target_object.text, data.target.profile_image_url_https, 'favorite');
+          }
+        });
+        stream.on('unfavorite', (data)=>{
+          if (data.target.screen_name === me.screen_name) {
+            createNotification("あなたのツイートがいいね取り消しされました", data.target_object.text, data.target.profile_image_url_https, 'unfavorite');
+          }
+        });
+        stream.on('follow', (data)=>{
+          if (data.target.screen_name === me.screen_name) {
+            createNotification(data.source.name + " さんにフォローされました", data.source.description, data.source.profile_image_url_https, 'follow');
+          }
+        });
+        stream.on('list_member_added', (data)=>{
+          if (data.target.screen_name === me.screen_name) {
+            createNotification(data.source.name + " さんにリスト "+data.target_object.name+" に追加されました", data.target_object.description, data.source.profile_image_url_https, 'list_member_added');
           }
         });
       });
