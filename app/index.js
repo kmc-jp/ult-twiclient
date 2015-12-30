@@ -28,7 +28,6 @@ function createTweetDom(tweet, api){
   var favorite_marker = document.createElement("span");
   var dom_thumbnails = document.createElement("div");
 
-  profile_image.setAttribute("class", "user_icon");
   if (tweet.retweeted_status) {
     let retweeted_status = tweet.retweeted_status;
     dom_tweet.classList.add('retweeted_status');
