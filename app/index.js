@@ -150,10 +150,29 @@ window.addEventListener('load',()=>{
       console.info("start streaming");
       btn_streambtn.setAttribute('disabled', 'disabled');
       api.stream('user', {}, (stream)=>{
-        stream.on('data', (tweet)=>{
-          if (!tweet.friends) {
-            console.log(tweet);
-            ul_tweet.insertBefore(createTweetDom(tweet, api), ul_tweet.firstChild);
+        stream.on('data', (data)=>{
+          console.log(data);
+          if (data.friends) {
+            return;
+          } else if (data.delete) {
+            // status deletion
+          } else if (data.scrub_geo) {
+            // location deletion
+          } else if (data.limit) {
+            // limit notices
+          } else if (data.status_withheld) {
+            // withheld content notices (status)
+          } else if (data.user_withheld) {
+            // withheld content notices (user)
+          } else if (data.disconnect) {
+            // disconnect messages
+          } else if (data.warning) {
+            // stall warnings
+          } else if (data.event) {
+            // catch some event
+          } else {
+            // status
+            ul_tweet.insertBefore(createTweetDom(data, api), ul_tweet.firstChild);
           }
         });
         stream.on('favorite', (data)=>{
