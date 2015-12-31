@@ -32,7 +32,7 @@ function createTweetDom(tweet, api){
     let retweeted_status = tweet.retweeted_status;
     dom_tweet.classList.add('retweeted_status');
     profile_image.setAttribute("src", retweeted_status.user.profile_image_url);
-    dom_user_name.textContent = retweeted_status.user.name + " @" + tweet.user.screen_name;
+    dom_user_name.textContent = retweeted_status.user.name + " @" + retweeted_status.user.screen_name;
     text_tweet.textContent = retweeted_status.text;
     favorite_marker.textContent = (retweeted_status.favorited ? "🍣" : "🍚") + retweeted_status.favorite_count;
   } else {
