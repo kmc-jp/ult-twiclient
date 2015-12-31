@@ -13,7 +13,7 @@ body {
   list-style-type: none;
   margin: 0px 5px;
   clear: both;
-  height: 90px;
+  height: 110px;
 }
 
 #tweets li:nth-child(2n+1) {
