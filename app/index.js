@@ -28,11 +28,21 @@ function createTweetDom(tweet, api){
   var favorite_marker = document.createElement("span");
   var dom_thumbnails = document.createElement("div");
 
-  profile_image.setAttribute("src", tweet.user.profile_image_url);
+  if (tweet.retweeted_status) {
+    let retweeted_status = tweet.retweeted_status;
+    dom_tweet.classList.add('retweeted_status');
+    profile_image.setAttribute("src", retweeted_status.user.profile_image_url);
+    dom_user_name.textContent = retweeted_status.user.name + " @" + retweeted_status.user.screen_name;
+    text_tweet.textContent = retweeted_status.text;
+    favorite_marker.textContent = (retweeted_status.favorited ? "🍣" : "🍚") + retweeted_status.favorite_count;
+  } else {
+    profile_image.setAttribute("src", tweet.user.profile_image_url);
+    dom_user_name.textContent = tweet.user.name + " @" + tweet.user.screen_name;
+    text_tweet.textContent = tweet.text;
+    favorite_marker.textContent = (tweet.favorited ? "🍣" : "🍚") + tweet.favorite_count;
+  }
   div_profile_image.setAttribute("class", "user_icon");
   div_profile_image.appendChild(profile_image);
-  dom_user_name.textContent = tweet.user.name + " @" + tweet.user.screen_name;
-  text_tweet.textContent = tweet.text;
   tweet.entities.urls.forEach((url)=>{
     text_tweet.textContent = text_tweet.textContent.replace(url.url, url.display_url);
   });
@@ -50,11 +60,11 @@ function createTweetDom(tweet, api){
       }
     });
   }
-  favorite_marker.textContent = (tweet.favorited ? "🍣" : "🍚") + tweet.favorite_count;
   favorite_marker.addEventListener('click', ()=>{
-      console.log(tweet.id_str);
-      var favorites_url = tweet.favorited ? 'favorites/destroy' : 'favorites/create';
-    api.post(favorites_url, {id: tweet.id_str}, (error, _tweet, response)=>{
+    console.log(tweet.id_str);
+    var favorites_url = tweet.favorited ? 'favorites/destroy' : 'favorites/create';
+    var favorites_id = tweet.retweeted_status ? tweet.retweeted_status.id_str : tweet.id_str
+    api.post(favorites_url, {id: favorites_id}, (error, _tweet, response)=>{
       if (!error) {
         console.log(_tweet, response);
         tweet.favorited = !tweet.favorited;
@@ -76,6 +86,12 @@ function createTweetDom(tweet, api){
   dom_tweet.appendChild(dom_user_name);
   dom_tweet.appendChild(text_tweet);
   dom_tweet.appendChild(favorite_marker);
+  if (tweet.retweeted_status) {
+    let dom_retweeted = document.createElement("div");
+    dom_retweeted.setAttribute("class", "retweeted_by")
+    dom_retweeted.textContent = "retweeted by @" + tweet.user.screen_name;
+    dom_tweet.appendChild(dom_retweeted);
+  }
   dom_tweet.appendChild(dom_thumbnails);
   return dom_tweet;
 }
