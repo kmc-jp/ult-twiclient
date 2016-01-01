@@ -166,6 +166,9 @@ window.addEventListener('load',()=>{
         this.newTweet.text = "@" + tweet.user.screen_name + " ";
         this.newTweet.in_reply_to_status_id = tweet.id_str;
         this.$$.submit_box.focus();
+      },
+      hasMedias: function(tweet) {
+        return 'extended_entities' in tweet && 'media' in tweet.extended_entities;
       }
     }
   });

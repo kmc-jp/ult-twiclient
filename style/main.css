@@ -16,7 +16,7 @@ body {
   min-height: 60px;
 }
 
-#tweets li:nth-child(2n+1) {
+#tweets li.odd-number {
   background-color: hsl(188, 100%, 88%);
 }
 
@@ -53,6 +53,7 @@ body {
 .user_icon {
   float: left;
   height: 100%;
+  min-height: inherit;
   margin-right: 0.5em;
 }
 
