@@ -27,8 +27,8 @@
           <div class="tweet_info">
             <div v-if="tweet.retweeted_status">{{ tweet.retweeted_status.user.name }} @{{ tweet.retweeted_status.user.screen_name }}</div>
             <div v-else>{{ tweet.user.name }} @{{ tweet.user.screen_name }}</div>
-            <span v-if="tweet.retweeted_status">{{ tweet.retweeted_status.text }}</span>
-            <span v-else>{{ tweet.text }}</span>
+            <span v-if="tweet.retweeted_status">{{ tweet.retweeted_status.text | expand_url tweet.retweeted_status.entities }}</span>
+            <span v-else>{{ tweet.text | expand_url tweet.entities }}</span>
             <div v-if="hasMedias(tweet)">
               <img v-for="media in tweet.extended_entities.media" v-if="media.type == 'photo'" v-bind:src="media.media_url" v-bind:width="media" v-on:click="showImage(media.media_url, media.sizes.small)" class="photo_thumbnail">
             </div>
@@ -54,6 +54,9 @@
       </ul>
     </div>
     <div id="notifier">
+      <div class="notification" v-for="notification in notifications" v-bind:class="{{ notification.kind }}" v-on:click="removeNotification(notification)">
+        {{ notification.title }} : {{ notification.body }}
+      </div>
     </div>
   </div>
 </body>

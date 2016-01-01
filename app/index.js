@@ -4,54 +4,18 @@ const Vue = require('vue');
 var setting = JSON.parse(localStorage["ulttwiclient"]);
 console.log(setting.tokens);
 
-function createTweetDom(tweet, api){
-  var dom_tweet = document.createElement("li");
-  var dom_thumbnails = document.createElement("div");
-
-  tweet.entities.urls.forEach((url)=>{
-    text_tweet.textContent = text_tweet.textContent.replace(url.url, url.display_url);
-  });
-  if (tweet.entities.media) {
-    dom_tweet.classList.add("with_photo_thumbnails");
-    tweet.extended_entities.media.forEach((m)=>{
-      if (m.type === "photo") {
-        let thumbnail = document.createElement("img");
-        thumbnail.setAttribute("src", m.media_url);
-        thumbnail.classList.add("photo_thumbnail");
-        thumbnail.addEventListener('click', ()=>{
-          showImage(m.media_url, m.sizes.small);
-        });
-        dom_thumbnails.appendChild(thumbnail);
-      }
-    });
-  }
-  dom_tweet.appendChild(dom_thumbnails);
-  return dom_tweet;
-}
-
-function createNotification(title, body, icon, kind) {
-  let notifier = document.getElementById("notifier");
-  let notification = document.createElement("div");
-  notification.classList.add('notification');
-  notification.classList.add(kind);
-  notification.textContent = title + " : " + body;
-  notifier.appendChild(notification);
-  const removeMSecond = 6000;
-  let autoremove = window.setTimeout(()=>{
-    notification.removeEventListener('click');
-    notification.parentNode.removeChild(notification);
-  }, removeMSecond);
-  notification.addEventListener('click', ()=>{
-    window.clearTimeout(autoremove);
-    notification.removeEventListener('click');
-    notification.parentNode.removeChild(notification);
-  });
-  if (!remote.getCurrentWindow().isFocused()) {
-    new Notification(title, {icon: icon, body: body});
-  }
-}
-
 window.addEventListener('load',()=>{
+  Vue.filter('expand_url', function (text, entities){
+    entities.urls.forEach((url)=>{
+      text = text.replace(url.url, url.display_url);
+    });
+    if (entities.media) {
+      entities.media.forEach((m)=>{
+        text = text.replace(m.url, m.display_url);
+      });
+    }
+    return text;
+  });
   var vm = new Vue({
     el: "#container",
     data: {
@@ -60,7 +24,8 @@ window.addEventListener('load',()=>{
         in_reply_to_status_id: ""
       },
       streaming: false,
-      tweets: []
+      tweets: [],
+      notifications: []
     },
     methods: {
       sendTweet: function (params) {
@@ -113,22 +78,22 @@ window.addEventListener('load',()=>{
           });
           stream.on('favorite', (data)=>{
             if (data.target.screen_name === me.screen_name) {
-              createNotification("あなたのツイートがいいねされました", data.target_object.text, data.target.profile_image_url_https, 'favorite');
+              this.createNotification("あなたのツイートがいいねされました", data.target_object.text, data.target.profile_image_url_https, 'favorite');
             }
           });
           stream.on('unfavorite', (data)=>{
             if (data.target.screen_name === me.screen_name) {
-              createNotification("あなたのツイートがいいね取り消しされました", data.target_object.text, data.target.profile_image_url_https, 'unfavorite');
+              this.createNotification("あなたのツイートがいいね取り消しされました", data.target_object.text, data.target.profile_image_url_https, 'unfavorite');
             }
           });
           stream.on('follow', (data)=>{
             if (data.target.screen_name === me.screen_name) {
-              createNotification(data.source.name + " さんにフォローされました", data.source.description, data.source.profile_image_url_https, 'follow');
+              this.createNotification(data.source.name + " さんにフォローされました", data.source.description, data.source.profile_image_url_https, 'follow');
             }
           });
           stream.on('list_member_added', (data)=>{
             if (data.target.screen_name === me.screen_name) {
-              createNotification(data.source.name + " さんにリスト "+data.target_object.name+" に追加されました", data.target_object.description, data.source.profile_image_url_https, 'list_member_added');
+              this.createNotification(data.source.name + " さんにリスト "+data.target_object.name+" に追加されました", data.target_object.description, data.source.profile_image_url_https, 'list_member_added');
             }
           });
         });
@@ -175,6 +140,23 @@ window.addEventListener('load',()=>{
         this.tweets.forEach(function(t,i) {
           if (t.id_str === id_str)
             this.tweets.splice(i, 1);
+        })
+      },
+      createNotification: function(title, body, icon, kind) {
+        let notification = {title, body, kind};
+        this.notifications.add(notification);
+        const removeMSecond = 6000;
+        window.setTimeout(()=>{
+          removeNotification(notification);
+        }, removeMSecond);
+        if (!remote.getCurrentWindow().isFocused()) {
+          new Notification(title, {icon: icon, body: body});
+        }
+      },
+      removeNotification: function(notification) {
+        this.notifications.forEach(function(n,i) {
+          if (n === notification)
+            this.notifications.splice(i, 1);
         })
       }
     }
