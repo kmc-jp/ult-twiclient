@@ -24,29 +24,31 @@
             <img v-if="tweet.retweeted_status" v-bind:src="tweet.retweeted_status.user.profile_image_url" v-on:click="sendReply(tweet.retweeted_status)">
             <img v-else v-bind:src="tweet.user.profile_image_url" v-on:click="sendReply(tweet)">
           </div>
-          <div v-if="tweet.retweeted_status">{{ tweet.retweeted_status.user.name }} @{{ tweet.retweeted_status.user.screen_name }}</div>
-          <div v-else>{{ tweet.user.name }} @{{ tweet.user.screen_name }}</div>
-          <span v-if="tweet.retweeted_status">{{ tweet.retweeted_status.text }}</span>
-          <span v-else>{{ tweet.text }}</span>
-          <div v-if="hasMedias(tweet)">
-            <img v-for="media in tweet.extended_entities.media" v-if="media.type == 'photo'" v-bind:src="media.media_url" v-bind:width="media" v-on:click="showImage(media.media_url, media.sizes.small)" class="photo_thumbnail">
-          </div>
-          <template v-if="tweet.retweeted_status">
-            <div v-on:click="favoriteTweet(tweet.retweeted_status)">
-              <span v-if="tweet.retweeted_status.favorited">🍣</span>
-              <span v-else>🍚</span>
-              {{ tweet.retweeted_status.favorite_count }}
+          <div class="tweet_info">
+            <div v-if="tweet.retweeted_status">{{ tweet.retweeted_status.user.name }} @{{ tweet.retweeted_status.user.screen_name }}</div>
+            <div v-else>{{ tweet.user.name }} @{{ tweet.user.screen_name }}</div>
+            <span v-if="tweet.retweeted_status">{{ tweet.retweeted_status.text }}</span>
+            <span v-else>{{ tweet.text }}</span>
+            <div v-if="hasMedias(tweet)">
+              <img v-for="media in tweet.extended_entities.media" v-if="media.type == 'photo'" v-bind:src="media.media_url" v-bind:width="media" v-on:click="showImage(media.media_url, media.sizes.small)" class="photo_thumbnail">
             </div>
-          </template>
-          <template v-else>
-            <div v-on:click="favoriteTweet(tweet)">
-              <span v-if="tweet.favorited">🍣</span>
-              <span v-else>🍚</span>
-              {{ tweet.favorite_count }}
+            <template v-if="tweet.retweeted_status">
+              <div v-on:click="favoriteTweet(tweet.retweeted_status)">
+                <span v-if="tweet.retweeted_status.favorited">🍣</span>
+                <span v-else>🍚</span>
+                {{ tweet.retweeted_status.favorite_count }}
+              </div>
+            </template>
+            <template v-else>
+              <div v-on:click="favoriteTweet(tweet)">
+                <span v-if="tweet.favorited">🍣</span>
+                <span v-else>🍚</span>
+                {{ tweet.favorite_count }}
+              </div>
+            </template>
+            <div class="retweeted_by" v-if="tweet.retweeted_status">
+              retweeted by @{{ tweet.user.screen_name }}
             </div>
-          </template>
-          <div class="retweeted_by" v-if="tweet.retweeted_status">
-            retweeted by @{{ tweet.user.screen_name }}
           </div>
         </li>
       </ul>
