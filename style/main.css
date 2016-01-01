@@ -1,5 +1,12 @@
+@import url(http://fonts.googleapis.com/earlyaccess/notosansjapanese.css);
+
 body {
   margin: 0;
+  font-family: 'Noto Sans Japanese', serif;
+}
+
+input, textarea, keygen, select, button, isindex, datagrid {
+  font-family: inherit;
 }
 
 #tweets {
