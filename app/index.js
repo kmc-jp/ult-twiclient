@@ -90,7 +90,8 @@ window.addEventListener('load',()=>{
             if (data.friends) {
               return;
             } else if (data.delete) {
-              // status deletion
+              console.log(data.delete);
+              this.deleteTweet(data.delete.id_str);
             } else if (data.scrub_geo) {
               // location deletion
             } else if (data.limit) {
@@ -169,6 +170,12 @@ window.addEventListener('load',()=>{
       },
       hasMedias: function(tweet) {
         return 'extended_entities' in tweet && 'media' in tweet.extended_entities;
+      },
+      deleteTweet: function(id_str) {
+        this.tweets.forEach(function(t,i) {
+          if (t.id_str === id_str)
+            this.tweets.splice(i, 1);
+        })
       }
     }
   });
