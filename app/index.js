@@ -59,7 +59,7 @@ window.addEventListener('load',()=>{
               return;
             } else if (data.delete) {
               console.log(data.delete);
-              this.deleteTweet(data.delete.id_str);
+              this.deleteTweet(data.delete.status.id_str);
             } else if (data.scrub_geo) {
               // location deletion
             } else if (data.limit) {
@@ -137,7 +137,7 @@ window.addEventListener('load',()=>{
         return tweet.text.match('@' + this.me.screen_name);
       },
       deleteTweet: function(id_str) {
-        this.tweets.forEach(function(t,i) {
+        this.tweets.forEach((t,i) => {
           if (t.id_str === id_str)
             this.tweets.splice(i, 1);
         })
