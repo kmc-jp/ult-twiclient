@@ -57,7 +57,7 @@
       </ul>
     </div>
     <div id="notifier">
-      <div class="notification" v-for="notification in notifications" v-bind:class="{{ notification.kind }}" v-on:click="removeNotification(notification)">
+      <div class="notification" v-for="notification in notifications" v-bind:class="notification.kind" v-on:click="removeNotification(notification)">
         {{ notification.title }} : {{ notification.body }}
       </div>
     </div>

@@ -144,7 +144,7 @@ window.addEventListener('load',()=>{
       },
       createNotification: function(title, body, icon, kind) {
         let notification = {title, body, kind};
-        this.notifications.add(notification);
+        this.notifications.push(notification);
         const removeMSecond = 6000;
         window.setTimeout(()=>{
           removeNotification(notification);
@@ -154,7 +154,7 @@ window.addEventListener('load',()=>{
         }
       },
       removeNotification: function(notification) {
-        this.notifications.forEach(function(n,i) {
+        this.notifications.forEach((n,i) => {
           if (n === notification)
             this.notifications.splice(i, 1);
         })
@@ -179,8 +179,8 @@ window.addEventListener('load',()=>{
       } else {
         console.log('error', error.map((e)=>e.message).join("\n"),  error);
       }
-      vm.startStreaming();
     });
+    vm.startStreaming();
   }else{
     console.warn("did not oauth");
   }
