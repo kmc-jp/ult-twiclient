@@ -24,6 +24,8 @@ window.addEventListener('load',()=>{
         in_reply_to_status_id: ""
       },
       streaming: false,
+      showingImage: false,
+      image: {},
       tweets: [],
       notifications: []
     },
@@ -112,19 +114,12 @@ window.addEventListener('load',()=>{
         });
       },
       showImage: function(url, size) {
-        var dom_body = document.getElementsByTagName("body")[0];
-        var dom_image_view = document.createElement("div");
-        dom_image_view.id = "image_view";
-        var dom_image = document.createElement("img");
-        dom_image.setAttribute("src", url);
-        dom_image.setAttribute("width", size.w);
-        dom_image.setAttribute("height", size.h);
-        dom_image_view.appendChild(dom_image);
-        dom_image_view.addEventListener('click', ()=>{
-          dom_image_view.parentNode.removeChild(dom_image_view);
-          dom_image_view.removeEventListener('click');
-        });
-        dom_body.appendChild(dom_image_view);
+        this.image = {url: url, width: size.w, height: size.h};
+        this.showingImage = true;
+      },
+      closeImage: function() {
+        this.image = {};
+        this.showingImage = false;
       },
       sendReply: function(tweet) {
         console.log(tweet.id_str);

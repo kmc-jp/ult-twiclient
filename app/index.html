@@ -17,6 +17,9 @@
       <button v-on:click="clearReply()">リプライをやめる</button>
       <span>残り {{ 140 - newTweet.text.length }}文字</span>
     </div>
+    <div id="image_view" v-if="showingImage" v-on:click="closeImage()">
+      <img v-bind:src="image.url" v-bind:width="image.width" v-bind:height="image.height">
+    </div>
     <div id="outline">
       <ul id="tweets">
         <li v-for="tweet in tweets | orderBy 'id' -1" v-bind:class="{ 'retweeted_status': tweet.retweeted_status, 'odd-number': $index % 2 == 1 }">
