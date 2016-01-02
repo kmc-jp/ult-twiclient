@@ -107,7 +107,8 @@ window.addEventListener('load',()=>{
         api.post(favorites_url, {id: favorites_id}, (error, _tweet, response)=>{
           if (!error) {
             console.log(_tweet, response);
-            tweet = _tweet;
+            tweet.favorited = _tweet.favorited;
+            tweet.favotite_count = _tweet.favorite_count;
           } else {
             console.log('error', error.map((e)=>e.message).join("\n"),  error);
           }
