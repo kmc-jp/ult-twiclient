@@ -23,6 +23,7 @@ window.addEventListener('load',()=>{
         text: "",
         in_reply_to_status_id: ""
       },
+      me: {},
       streaming: false,
       showingImage: false,
       image: {},
@@ -127,10 +128,13 @@ window.addEventListener('load',()=>{
         let submit_box = document.getElementById("submitbox");
         this.newTweet.text = "@" + tweet.user.screen_name + " ";
         this.newTweet.in_reply_to_status_id = tweet.id_str;
-        this.$$.submit_box.focus();
+        this.$els.submit_box.focus();
       },
       hasMedias: function(tweet) {
         return 'extended_entities' in tweet && 'media' in tweet.extended_entities;
+      },
+      isMentionsForYou: function(tweet) {
+        return tweet.text.match('@' + this.me.screen_name);
       },
       deleteTweet: function(id_str) {
         this.tweets.forEach(function(t,i) {
@@ -159,10 +163,9 @@ window.addEventListener('load',()=>{
   });
   if(setting.tokens){
     var api = getApi(setting.tokens);
-    var me;
     api.get('account/verify_credentials', {}, (error, data, response)=>{
       if (!error) {
-        me = data;
+        vm.me = data;
       } else {
         console.log('error', error.map((e)=>e.message).join("\n"),  error);
       }

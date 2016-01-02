@@ -30,6 +30,10 @@ body {
   min-height: 160px;
 }
 
+#tweets li.mentions_for_you {
+  background-color: hsl(0, 100%, 88%);
+}
+
 #tweets .tweet_info {
   width: 100%;
 }

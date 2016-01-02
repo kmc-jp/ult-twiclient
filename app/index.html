@@ -9,7 +9,7 @@
     <div id="topbar">
       <p>this is the ultimate twitter client !!!!
       <a href="./oauth.html">auth!</a>
-      <input type="text" v-model="newTweet.text" v-el="submit_box">
+      <input type="text" v-model="newTweet.text" v-el:submit_box>
       <button v-on:click="sendTweet(newTweet)">ツイート</button>
       <button v-on:click="startStreaming()" v-bind:disabled="streaming">ストリーミング</button>
       返信先
@@ -22,7 +22,7 @@
     </div>
     <div id="outline">
       <ul id="tweets">
-        <li v-for="tweet in tweets | orderBy 'id' -1" v-bind:class="{ 'retweeted_status': tweet.retweeted_status, 'odd-number': $index % 2 == 1 }">
+        <li v-for="tweet in tweets | orderBy 'id' -1" v-bind:class="{ 'retweeted_status': tweet.retweeted_status, 'odd-number': $index % 2 == 1, 'mentions_for_you': isMentionsForYou(tweet) }">
           <div class="user_icon">
             <img v-if="tweet.retweeted_status" v-bind:src="tweet.retweeted_status.user.profile_image_url" v-on:click="sendReply(tweet.retweeted_status)">
             <img v-else v-bind:src="tweet.user.profile_image_url" v-on:click="sendReply(tweet)">
