@@ -1,5 +1,8 @@
 import {getApi} from '../common/oauth';
 const remote = require('electron').remote;
+const Menu = remote.Menu;
+const MenuItem = remote.MenuItem;
+const clipboard = require('electron').clipboard;
 const Vue = require('vue');
 var setting = JSON.parse(localStorage["ulttwiclient"]);
 console.log(setting.tokens);
@@ -16,6 +19,12 @@ window.addEventListener('load',()=>{
     }
     return text;
   });
+  // context menu on status
+  var contextMenuStatus = new Menu();
+  contextMenuStatus.append(new MenuItem({label: "ツイートに返信する", click: ()=>{vm.sendReply(vm.selectedTweet);}}));
+  contextMenuStatus.append(new MenuItem({label: "ツイートをふぁぼる", click: ()=>{vm.favoriteTweet(vm.selectedTweet);}}));
+  contextMenuStatus.append(new MenuItem({type: 'separator'}));
+  contextMenuStatus.append(new MenuItem({label: "ツイートのJSONを取得", click: ()=>{clipboard.writeText(JSON.stringify(vm.selectedTweet));}}));
   var vm = new Vue({
     el: "#container",
     data: {
@@ -23,6 +32,7 @@ window.addEventListener('load',()=>{
         text: "",
         in_reply_to_status_id: ""
       },
+      selectedTweet: {},
       me: {},
       streaming: false,
       showingImage: false,
@@ -156,6 +166,10 @@ window.addEventListener('load',()=>{
           if (n === notification)
             this.notifications.splice(i, 1);
         })
+      },
+      contextMenuOnStatus: function(tweet) {
+        this.selectedTweet = tweet;
+        contextMenuStatus.popup(remote.getCurrentWindow());
       }
     }
   });
