@@ -40,6 +40,11 @@ window.addEventListener('load',()=>{
       tweets: [],
       notifications: []
     },
+    computed: {
+      calculateRemainChar: function() {
+        return 140 - this.newTweet.text.length;
+      }
+    },
     methods: {
       sendTweet: function (params) {
         api.post('statuses/update', {

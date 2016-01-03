@@ -15,7 +15,7 @@
       返信先
       <input type="text" disabled="disabled" v-model="newTweet.in_reply_to_status_id">
       <button v-on:click="clearReply()">リプライをやめる</button>
-      <span>残り {{ 140 - newTweet.text.length }}文字</span>
+      <span>残り {{ calculateRemainChar }}文字</span>
     </div>
     <div id="image_view" v-if="showingImage" v-on:click="closeImage()">
       <img v-bind:src="image.url" v-bind:width="image.width" v-bind:height="image.height">
