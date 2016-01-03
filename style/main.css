@@ -14,7 +14,7 @@ body {
   list-style-type: none;
   margin: 0px 5px;
   min-height: 60px;
-  display: -webkit-flex;
+  display: flex;
   flex-direction: row;
 }
 
