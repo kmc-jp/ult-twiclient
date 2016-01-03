@@ -1,6 +1,6 @@
 import {getApi} from '../common/oauth';
 const remote = require('electron').remote;
-var setting = JSON.parse(localStorage["ulttwiclient"]);
+var setting = JSON.parse(localStorage["ulttwiclient"] || '{}');
 console.log(setting.tokens);
 
 function showImage(url, size) {
