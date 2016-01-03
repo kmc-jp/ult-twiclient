@@ -36,13 +36,12 @@ window.addEventListener('load',()=>{
           status: params.text,
           in_reply_to_status_id: params.in_reply_to_status_id
         }, (error, tweet, response)=>{
-          if (!error) {
-            console.log(tweet, response);
-            this.newTweet.text = '';
-            this.newTweet.in_reply_to_status_id = '';
-          } else {
-            console.log('error', error.map((e)=>e.message).join("\n"),  error);
+          if (error) {
+            return console.log('error', error.map((e)=>e.message).join("\n"),  error);
           }
+          console.log(tweet, response);
+          this.newTweet.text = '';
+          this.newTweet.in_reply_to_status_id = '';
         });
       },
       clearReply: function () {
@@ -106,13 +105,12 @@ window.addEventListener('load',()=>{
         var favorites_url = tweet.favorited ? 'favorites/destroy' : 'favorites/create';
         var favorites_id = tweet.retweeted_status ? tweet.retweeted_status.id_str : tweet.id_str
         api.post(favorites_url, {id: favorites_id}, (error, _tweet, response)=>{
-          if (!error) {
-            console.log(_tweet, response);
-            tweet.favorited = _tweet.favorited;
-            tweet.favotite_count = _tweet.favorite_count;
-          } else {
-            console.log('error', error.map((e)=>e.message).join("\n"),  error);
+          if (error) {
+            return console.log('error', error.map((e)=>e.message).join("\n"),  error);
           }
+          console.log(_tweet, response);
+          tweet.favorited = _tweet.favorited;
+          tweet.favotite_count = _tweet.favorite_count;
         });
       },
       showImage: function(url, size) {
@@ -164,21 +162,19 @@ window.addEventListener('load',()=>{
   if(setting.tokens){
     var api = getApi(setting.tokens);
     api.get('account/verify_credentials', {}, (error, data, response)=>{
-      if (!error) {
-        vm.me = data;
-      } else {
-        console.log('error', error.map((e)=>e.message).join("\n"),  error);
+      if (error) {
+        return console.log('error', error.map((e)=>e.message).join("\n"),  error);
       }
+      vm.me = data;
     });
     api.get('statuses/home_timeline', {count: 200}, function(error, tweets, response){
-      if (!error) {
-        console.log('tweets',tweets.map((t)=>t.text).join("\n"), tweets);
-        tweets.forEach((tweet)=>{
-          vm.tweets.push(tweet);
-        });
-      } else {
+      if (error) {
         console.log('error', error.map((e)=>e.message).join("\n"),  error);
       }
+      console.log('tweets',tweets.map((t)=>t.text).join("\n"), tweets);
+      tweets.forEach((tweet)=>{
+        vm.tweets.push(tweet);
+      });
     });
     vm.startStreaming();
   }else{
