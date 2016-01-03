@@ -98,6 +98,10 @@ body {
   background-color: hsl(200, 100%, 50%);
 }
 
+.notification.fail {
+  background-color: hsl(360, 100%, 60%);
+}
+
 @-webkit-keyframes show_notifier {
   0% { bottom: -1.5em; }
   100% { bottom: 0; }

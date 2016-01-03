@@ -47,9 +47,11 @@ window.addEventListener('load',()=>{
           in_reply_to_status_id: params.in_reply_to_status_id
         }, (error, tweet, response)=>{
           if (error) {
+            this.createNotification("ツイートの投稿に失敗しました", this.newTweet.text, null, 'fail');
             return console.log('error', error.map((e)=>e.message).join("\n"),  error);
           }
           console.log(tweet, response);
+          this.createNotification("ツイートが投稿されました", this.newTweet.text, null, 'tweet');
           this.newTweet.text = '';
           this.newTweet.in_reply_to_status_id = '';
         });
@@ -86,6 +88,9 @@ window.addEventListener('load',()=>{
             } else {
               // status
               this.tweets.push(data);
+              if (this.isMentionsForYou(data)) {
+                this.createNotification("あなた宛のメンションがあります", data.text, data.user.profile_image_url_https, 'tweet');
+              }
             }
           });
           stream.on('favorite', (data)=>{
@@ -116,9 +121,14 @@ window.addEventListener('load',()=>{
         var favorites_id = tweet.retweeted_status ? tweet.retweeted_status.id_str : tweet.id_str
         api.post(favorites_url, {id: favorites_id}, (error, _tweet, response)=>{
           if (error) {
+            this.createNotification("ツイートをいいねできませんでした", tweet.text, null, 'fail');
             return console.log('error', error.map((e)=>e.message).join("\n"),  error);
           }
           console.log(_tweet, response);
+          if (tweet.favorited)
+            this.createNotification("ツイートをいいね取り消ししました", tweet.text, null, 'unfavorite');
+          else
+            this.createNotification("ツイートをいいねしました", tweet.text, null, 'favorite');
           tweet.favorited = _tweet.favorited;
           tweet.favotite_count = _tweet.favorite_count;
         });
