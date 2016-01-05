@@ -18,7 +18,7 @@
       <span>残り {{ calculateRemainChar }}文字</span>
     </div>
     <div id="image_view" v-if="showingImage" v-on:click="closeImage()">
-      <img v-bind:src="image.url" v-bind:width="image.width" v-bind:height="image.height">
+      <img v-bind:src="image.url" v-bind:width="image.width" v-bind:height="image.height" v-on:contextmenu="contextMenuOnImage()">
     </div>
     <div id="outline">
       <ul id="tweets">
