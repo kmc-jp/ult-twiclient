@@ -170,7 +170,7 @@ window.addEventListener('load',()=>{
         this.notifications.push(notification);
         const removeMSecond = 6000;
         window.setTimeout(()=>{
-          removeNotification(notification);
+          this.removeNotification(notification);
         }, removeMSecond);
         if (!remote.getCurrentWindow().isFocused()) {
           new Notification(title, {icon: icon, body: body});
