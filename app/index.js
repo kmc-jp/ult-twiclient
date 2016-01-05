@@ -148,7 +148,6 @@ window.addEventListener('load',()=>{
       },
       sendReply: function(tweet) {
         console.log(tweet.id_str);
-        let submit_box = document.getElementById("submitbox");
         this.newTweet.text = "@" + tweet.user.screen_name + " ";
         this.newTweet.in_reply_to_status_id = tweet.id_str;
         this.$els.submit_box.focus();
