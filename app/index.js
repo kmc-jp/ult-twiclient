@@ -20,11 +20,12 @@ window.addEventListener('load',()=>{
     return text;
   });
   // context menu on status
-  var contextMenuTweet = new Menu();
-  contextMenuStatus.append(new MenuItem({label: "ツイートに返信する", click: ()=>{vm.sendReply(vm.selectedTweet);}}));
-  contextMenuStatus.append(new MenuItem({label: "ツイートをふぁぼる", click: ()=>{vm.favoriteTweet(vm.selectedTweet);}}));
-  contextMenuStatus.append(new MenuItem({type: 'separator'}));
-  contextMenuStatus.append(new MenuItem({label: "ツイートのJSONを取得", click: ()=>{clipboard.writeText(JSON.stringify(vm.selectedTweet));}}));
+  var contextMenuTweet = Menu.buildFromTemplate([
+    {label: "ツイートに返信する", click: ()=>{vm.sendReply(vm.selectedTweet);}},
+    {label: "ツイートをふぁぼる", click: ()=>{vm.favoriteTweet(vm.selectedTweet);}},
+    {type: 'separator'},
+    {label: "ツイートのJSONを取得", click: ()=>{clipboard.writeText(JSON.stringify(vm.selectedTweet));}}
+  ]);
   var vm = new Vue({
     el: "#container",
     data: {
