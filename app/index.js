@@ -157,7 +157,7 @@ window.addEventListener('load',()=>{
         return 'extended_entities' in tweet && 'media' in tweet.extended_entities;
       },
       isMentionsForYou: function(tweet) {
-        return tweet.text.match('@' + this.me.screen_name);
+        return tweet.text.match('@' + this.me.screen_name) && !tweet.retweeted_status;
       },
       deleteTweet: function(id_str) {
         this.tweets.forEach((t,i) => {
