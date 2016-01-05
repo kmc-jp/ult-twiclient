@@ -185,6 +185,11 @@ window.addEventListener('load',()=>{
       contextMenuOnTweet: function(tweet) {
         this.selectedTweet = tweet;
         contextMenuForTweet.popup(remote.getCurrentWindow());
+      },
+      detectKeyDown: function(event) {
+        if (event.ctrlKey && event.keyIdentifier == "Enter") {
+          this.sendTweet(this.newTweet);
+        }
       }
     }
   });
