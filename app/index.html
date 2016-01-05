@@ -28,7 +28,7 @@
               'odd-number': $index % 2 == 1,
               'mentions_for_you': isMentionsForYou(tweet)
             }"
-            v-on:contextmenu="contextMenuOnStatus(tweet)">
+            v-on:contextmenu="contextMenuOnTweet(tweet)">
           <div class="user_icon">
             <img v-if="tweet.retweeted_status" v-bind:src="tweet.retweeted_status.user.profile_image_url" v-on:click="sendReply(tweet.retweeted_status)">
             <img v-else v-bind:src="tweet.user.profile_image_url" v-on:click="sendReply(tweet)">
