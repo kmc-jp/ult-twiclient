@@ -20,7 +20,7 @@ window.addEventListener('load',()=>{
     return text;
   });
   // context menu on status
-  var contextMenuTweet = Menu.buildFromTemplate([
+  var contextMenuForTweet = Menu.buildFromTemplate([
     {label: "ツイートに返信する", click: ()=>{vm.sendReply(vm.selectedTweet);}},
     {label: "ツイートをふぁぼる", click: ()=>{vm.favoriteTweet(vm.selectedTweet);}},
     {type: 'separator'},
@@ -184,7 +184,7 @@ window.addEventListener('load',()=>{
       },
       contextMenuOnTweet: function(tweet) {
         this.selectedTweet = tweet;
-        contextMenuTweet.popup(remote.getCurrentWindow());
+        contextMenuForTweet.popup(remote.getCurrentWindow());
       }
     }
   });
