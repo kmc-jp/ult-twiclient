@@ -34,6 +34,7 @@ window.addEventListener('load',()=>{
         in_reply_to_status_id: ""
       },
       selectedTweet: {},
+      sendReplyDestTweet: {},
       me: {},
       streaming: false,
       showingImage: false,
@@ -60,11 +61,13 @@ window.addEventListener('load',()=>{
           this.createNotification("ツイートが投稿されました", this.newTweet.text, null, 'tweet');
           this.newTweet.text = '';
           this.newTweet.in_reply_to_status_id = '';
+          this.sendReplyDestTweet = {};
         });
       },
       clearReply: function () {
         this.newTweet.text = this.newTweet.text.replace(/@[a-zA-Z0-9_]+/g, '');
         this.newTweet.in_reply_to_status_id = '';
+        this.sendReplyDestTweet = {};
       },
       startStreaming: function () {
         console.info("start streaming");
@@ -149,6 +152,7 @@ window.addEventListener('load',()=>{
       },
       sendReply: function(tweet) {
         console.log(tweet.id_str);
+        this.sendReplyDestTweet = tweet;
         this.newTweet.text = "@" + tweet.user.screen_name + " ";
         this.newTweet.in_reply_to_status_id = tweet.id_str;
         this.$els.submit_box.focus();
