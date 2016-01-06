@@ -4,6 +4,7 @@ const Menu = remote.Menu;
 const MenuItem = remote.MenuItem;
 const clipboard = require('electron').clipboard;
 const Vue = require('vue');
+require('twitter-text');
 var setting = JSON.parse(localStorage["ulttwiclient"]);
 console.log(setting.tokens);
 
@@ -45,7 +46,7 @@ window.addEventListener('load',()=>{
     },
     computed: {
       calculateRemainChar: function() {
-        return this.maxTweetLength - this.newTweet.text.length;
+        return this.maxTweetLength - twttr.txt.getTweetLength(this.newTweet.text);
       },
       isLongTweet: function() {
         return this.borderOfLongTweet > this.calculateRemainChar;
