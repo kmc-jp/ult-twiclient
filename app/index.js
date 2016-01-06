@@ -40,11 +40,18 @@ window.addEventListener('load',()=>{
       image: {},
       tweets: [],
       notifications: [],
-      maxTweetLength: 140
+      maxTweetLength: 140,
+      borderOfLongTweet: 20
     },
     computed: {
       calculateRemainChar: function() {
         return this.maxTweetLength - this.newTweet.text.length;
+      },
+      isLongTweet: function() {
+        return this.borderOfLongTweet > this.calculateRemainChar;
+      },
+      isExceededTweet: function() {
+        return this.calculateRemainChar < 0;
       }
     },
     methods: {

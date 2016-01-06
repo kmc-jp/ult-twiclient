@@ -2,6 +2,14 @@ body {
   margin: 0;
 }
 
+.long_tweet {
+  color: hsl(30, 100%, 55%);
+}
+
+.exceeded_tweet {
+  color: hsl(0, 100%, 55%);
+}
+
 #tweets {
   margin: 1em;
   -webkit-margin-before: 0;
