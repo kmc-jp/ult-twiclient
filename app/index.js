@@ -65,7 +65,7 @@ window.addEventListener('load',()=>{
         });
       },
       clearReply: function () {
-        this.newTweet.text = this.newTweet.text.replace(/@[a-zA-Z0-9_]+/g, '');
+        this.newTweet.text = this.newTweet.text.replace(/@[a-zA-Z0-9_]+\s*/g, '');
         this.newTweet.in_reply_to_status_id = '';
         this.sendReplyDestTweet = {};
       },
