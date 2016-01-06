@@ -39,11 +39,12 @@ window.addEventListener('load',()=>{
       showingImage: false,
       image: {},
       tweets: [],
-      notifications: []
+      notifications: [],
+      maxTweetLength: 140
     },
     computed: {
       calculateRemainChar: function() {
-        return 140 - this.newTweet.text.length;
+        return this.maxTweetLength - this.newTweet.text.length;
       }
     },
     methods: {
