@@ -12,10 +12,12 @@
       <input type="text" v-model="newTweet.text" v-el:submit_box>
       <button v-on:click="sendTweet(newTweet)">ツイート</button>
       <button v-on:click="startStreaming()" v-bind:disabled="streaming">ストリーミング</button>
-      返信先
-      <input type="text" disabled="disabled" v-model="newTweet.in_reply_to_status_id">
-      <button v-on:click="clearReply()">リプライをやめる</button>
       <span>残り {{ calculateRemainChar }}文字</span>
+      <div v-if="newTweet.in_reply_to_status_id">
+        <button v-on:click="clearReply()">X</button>
+        <img class="in_reply_to_user_icon" v-bind:src="sendReplyDestTweet.user.profile_image_url_https">
+        {{ sendReplyDestTweet.text }}
+      </div>
     </div>
     <div id="image_view" v-if="showingImage" v-on:click="closeImage()">
       <img v-bind:src="image.url" v-bind:width="image.width" v-bind:height="image.height">

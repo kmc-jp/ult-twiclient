@@ -73,6 +73,11 @@ input, textarea, keygen, select, button, isindex, datagrid {
   margin-right: 0.5em;
 }
 
+.in_reply_to_user_icon {
+  width: 16px;
+  height: 16px;
+}
+
 #topbar {
   position: fixed;
   top: 0;
