@@ -10,7 +10,7 @@
       <p>this is the ultimate twitter client !!!!
       <a href="./oauth.html">auth!</a>
       <input type="text" v-model="newTweet.text" v-el:submit_box>
-      <button v-on:click="sendTweet(newTweet)">ツイート</button>
+      <button v-on:click="sendTweet(newTweet)" v-bind:disabled="isExceededTweet">ツイート</button>
       <span v-bind:class="{ 'long_tweet': isLongTweet, 'exceeded_tweet': isExceededTweet }">{{ calculateRemainChar }}</span>
       <button v-on:click="startStreaming()" v-bind:disabled="streaming">ストリーミング</button>
       返信先
