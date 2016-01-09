@@ -5,21 +5,67 @@
   <link rel="stylesheet" href="../style/main.css">
 </head>
 <body>
-  <div id="topbar">
-    <p>this is the ultimate twitter client !!!!
-    <a href="./oauth.html">auth!</a>
-    <input id="submitbox" type="text">
-    <button id="submitbtn">ツイート</button>
-    <button id="streambtn">ストリーミング</button>
-    返信先
-    <input id="in_reply_to_status_id" type="text" disabled="disabled">
-    <button id="clear_reply_btn">リプライをやめる</button>
-    <span id="char_counter">残り 140文字</span>
-  </div>
-  <div id="outline">
-    <ul id="tweets">
-    </ul>
-  </div>
-  <div id="notifier">
+  <div id="container">
+    <div id="topbar">
+      <p>this is the ultimate twitter client !!!!
+      <a href="./oauth.html">auth!</a>
+      <input type="text" v-model="newTweet.text" v-el:submit_box>
+      <button v-on:click="sendTweet(newTweet)">ツイート</button>
+      <button v-on:click="startStreaming()" v-bind:disabled="streaming">ストリーミング</button>
+      返信先
+      <input type="text" disabled="disabled" v-model="newTweet.in_reply_to_status_id">
+      <button v-on:click="clearReply()">リプライをやめる</button>
+      <span>残り {{ calculateRemainChar }}文字</span>
+    </div>
+    <div id="image_view" v-if="showingImage" v-on:click="closeImage()">
+      <img v-bind:src="image.url" v-bind:width="image.width" v-bind:height="image.height">
+    </div>
+    <div id="outline">
+      <ul id="tweets">
+        <li v-for="tweet in tweets | orderBy 'id' -1"
+            v-bind:class="{
+              'retweeted_status': tweet.retweeted_status,
+              'odd-number': $index % 2 == 1,
+              'mentions_for_you': isMentionsForYou(tweet)
+            }"
+            v-on:contextmenu="contextMenuOnTweet(tweet)">
+          <div class="user_icon">
+            <img v-if="tweet.retweeted_status" v-bind:src="tweet.retweeted_status.user.profile_image_url" v-on:click="sendReply(tweet.retweeted_status)">
+            <img v-else v-bind:src="tweet.user.profile_image_url" v-on:click="sendReply(tweet)">
+          </div>
+          <div class="tweet_info">
+            <div v-if="tweet.retweeted_status">{{ tweet.retweeted_status.user.name }} @{{ tweet.retweeted_status.user.screen_name }}</div>
+            <div v-else>{{ tweet.user.name }} @{{ tweet.user.screen_name }}</div>
+            <span v-if="tweet.retweeted_status">{{ tweet.retweeted_status.text | expand_url tweet.retweeted_status.entities }}</span>
+            <span v-else>{{ tweet.text | expand_url tweet.entities }}</span>
+            <div v-if="hasMedias(tweet)">
+              <img v-for="media in tweet.extended_entities.media" v-if="media.type == 'photo'" v-bind:src="media.media_url" v-bind:width="media" v-on:click="showImage(media.media_url, media.sizes.small)" class="photo_thumbnail">
+            </div>
+            <template v-if="tweet.retweeted_status">
+              <div v-on:click="favoriteTweet(tweet.retweeted_status)">
+                <span v-if="tweet.retweeted_status.favorited">🍣</span>
+                <span v-else>🍚</span>
+                {{ tweet.retweeted_status.favorite_count }}
+              </div>
+            </template>
+            <template v-else>
+              <div v-on:click="favoriteTweet(tweet)">
+                <span v-if="tweet.favorited">🍣</span>
+                <span v-else>🍚</span>
+                {{ tweet.favorite_count }}
+              </div>
+            </template>
+            <div class="retweeted_by" v-if="tweet.retweeted_status">
+              retweeted by @{{ tweet.user.screen_name }}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div id="notifier">
+      <div class="notification" v-for="notification in notifications" v-bind:class="notification.kind" v-on:click="removeNotification(notification)">
+        {{ notification.title }} : {{ notification.body }}
+      </div>
+    </div>
   </div>
 </body>
