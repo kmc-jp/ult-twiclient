@@ -4,24 +4,36 @@
   <script src="./index.js"></script>
   <link rel="stylesheet" href="../style/main.css">
 </head>
+
 <body>
   <div id="container" v-on:keypress="detectKeyDown($event)" tabindex="-1">
+
     <div id="topbar">
       this is the ultimate twitter client !!!!
       <a href="./oauth.html">auth!</a>
       <input type="text" v-model="newTweet.text" v-el:submit_box>
-      <button v-on:click="sendTweet(newTweet)" v-bind:disabled="isExceededTweet">ツイート</button>
-      <span v-bind:class="{ 'long_tweet': isLongTweet, 'exceeded_tweet': isExceededTweet }">{{ calculateRemainChar }}</span>
-      <button v-on:click="startStreaming()" v-bind:disabled="streaming">ストリーミング</button>
+      <button v-on:click="sendTweet(newTweet)" v-bind:disabled="isExceededTweet">
+        ツイート
+      </button>
+      <span v-bind:class="{ 'long_tweet': isLongTweet, 'exceeded_tweet': isExceededTweet }">
+        {{ calculateRemainChar }}
+      </span>
+      <button v-on:click="startStreaming()" v-bind:disabled="streaming">
+        ストリーミング
+      </button>
       <div v-if="newTweet.in_reply_to_status_id">
-      <button v-on:click="clearReply()">X</button>
-      <img class="in_reply_to_user_icon" v-bind:src="sendReplyDestTweet.user.profile_image_url_https">
-        {{ sendReplyDestTweet.text }}
+        <button v-on:click="clearReply()">X</button>
+        <img class="in_reply_to_user_icon"
+             v-bind:src="sendReplyDestTweet.user.profile_image_url_https">
+          {{ sendReplyDestTweet.text }}
       </div>
     </div>
+
     <div id="image_view" v-if="showingImage" v-on:click="closeImage()">
-      <img v-bind:src="image.url" v-bind:width="image.width" v-bind:height="image.height" v-on:contextmenu="contextMenuOnImage()">
+      <img v-bind:src="image.url" v-bind:width="image.width"
+           v-bind:height="image.height" v-on:contextmenu="contextMenuOnImage()">
     </div>
+
     <div id="outline">
       <ul id="tweets">
         <li v-for="tweet in tweets | orderBy 'id' -1"
@@ -32,32 +44,42 @@
             }"
             v-on:contextmenu="contextMenuOnTweet(tweet)">
           <div class="user_icon">
-            <img v-bind:src="body(tweet).user.profile_image_url" v-on:click="sendReply(body(tweet))">
+            <img v-bind:src="body(tweet).user.profile_image_url"
+                 v-on:click="sendReply(body(tweet))">
           </div>
+
           <div class="tweet_info">
             <div>{{ body(tweet).user.name }} @{{ body(tweet).user.screen_name }}</div>
             <span>{{ body(tweet).text | expand_url body(tweet).entities }}</span>
             <div v-if="hasMedias(tweet)">
-              <img v-for="media in tweet.extended_entities.media" v-if="media.type == 'photo'" v-bind:src="media.media_url" v-bind:width="media" v-on:click="showImage(media.media_url, media.sizes.small)" class="photo_thumbnail">
+              <img v-for="media in tweet.extended_entities.media"
+                   v-if="media.type == 'photo'"
+                   v-bind:src="media.media_url" v-bind:width="media"
+                   v-on:click="showImage(media.media_url, media.sizes.small)"
+                   class="photo_thumbnail">
             </div>
-          <div>
-            <span v-on:click="favoriteTweet(body(tweet))">
-              <span v-if="body(tweet).favorited">🍣</span>
-              <span v-else>🍚</span>
-              {{ body(tweet).favorite_count }}
-            </span>
-          </div>
+            <div>
+              <span v-on:click="favoriteTweet(body(tweet))">
+                <span v-if="body(tweet).favorited">🍣</span>
+                <span v-else>🍚</span>
+                {{ body(tweet).favorite_count }}
+              </span>
+            </div>
             <div class="retweeted_by" v-if="tweet.retweeted_status">
               retweeted by @{{ tweet.user.screen_name }}
             </div>
           </div>
+
         </li>
       </ul>
     </div>
+
     <div id="notifier">
-      <div class="notification" v-for="notification in notifications" v-bind:class="notification.kind" v-on:click="removeNotification(notification)">
+      <div class="notification" v-for="notification in notifications"
+           v-bind:class="notification.kind" v-on:click="removeNotification(notification)">
         {{ notification.title }} : {{ notification.body }}
       </div>
     </div>
+
   </div>
 </body>
