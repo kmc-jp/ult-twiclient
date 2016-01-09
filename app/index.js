@@ -144,8 +144,7 @@ window.addEventListener('load',()=>{
             this.createNotification("ツイートをいいね取り消ししました", tweet.text, null, 'unfavorite');
           else
             this.createNotification("ツイートをいいねしました", tweet.text, null, 'favorite');
-          tweet.favorited = _tweet.favorited;
-          tweet.favotite_count = _tweet.favorite_count;
+          Object.assign(tweet, _tweet);
         });
       },
       showImage: function(url, size) {
