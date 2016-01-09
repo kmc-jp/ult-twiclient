@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twemoji/1.3.2/twemoji.min.js"></script>
   <script src="./index.js"></script>
   <link rel="stylesheet" href="../style/main.css">
 </head>
@@ -50,7 +51,9 @@
 
           <div class="tweet_info">
             <div>{{ body(tweet).user.name }} @{{ body(tweet).user.screen_name }}</div>
-            <span>{{ body(tweet).text | expand_url body(tweet).entities }}</span>
+            <span>
+              {{{ body(tweet).text | expand_url body(tweet).entities | html_escape | twemoji }}}
+            </span>
             <div v-if="hasMedias(tweet)">
               <img v-for="media in tweet.extended_entities.media"
                    v-if="media.type == 'photo'"

@@ -22,6 +22,16 @@ window.addEventListener('load',()=>{
     }
     return text;
   });
+  Vue.filter('twemoji', function (text){
+    return twemoji.parse(text);
+  });
+  Vue.filter('html_escape', function (text){
+    return text.replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+  });
   // context menu on status
   var contextMenuForTweet = Menu.buildFromTemplate([
     {label: "ツイートに返信する", click: ()=>{vm.sendReply(vm.selectedTweet);}},
