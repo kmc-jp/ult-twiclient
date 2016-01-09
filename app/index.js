@@ -3,6 +3,8 @@ const remote = require('electron').remote;
 const Menu = remote.Menu;
 const MenuItem = remote.MenuItem;
 const clipboard = require('electron').clipboard;
+const dialog = remote.dialog;
+const path = require('path');
 const Vue = require('vue');
 var setting = JSON.parse(localStorage["ulttwiclient"] || '{}');
 console.log(setting.tokens);
@@ -25,6 +27,10 @@ window.addEventListener('load',()=>{
     {label: "ツイートをふぁぼる", click: ()=>{vm.favoriteTweet(vm.selectedTweet);}},
     {type: 'separator'},
     {label: "ツイートのJSONを取得", click: ()=>{clipboard.writeText(JSON.stringify(vm.selectedTweet));}}
+  ]);
+  // context menu on image
+  var contextMenuForImage = Menu.buildFromTemplate([
+    {label: "名前を付けて画像を保存", click: ()=>{vm.saveImage();}}
   ]);
   var vm = new Vue({
     el: "#container",
@@ -189,6 +195,18 @@ window.addEventListener('load',()=>{
       contextMenuOnTweet: function(tweet) {
         this.selectedTweet = tweet;
         contextMenuForTweet.popup(remote.getCurrentWindow());
+      },
+      contextMenuOnImage: function() {
+        contextMenuForImage.popup(remote.getCurrentWindow());
+      },
+      saveImage: function() {
+        const basename = path.basename(this.image.url);
+        const defaultPath = path.dirname(require.main.filename) + basename;
+        dialog.showSaveDialog({defaultPath}, (filename)=>{
+          require('request')(this.image.url).pipe(require('fs').createWriteStream(filename)).on('close', ()=>{
+            this.createNotification('画像の保存に成功しました', basename, null, 'success');
+          });
+        });
       }
     }
   });
