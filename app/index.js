@@ -4,7 +4,7 @@ const Menu = remote.Menu;
 const MenuItem = remote.MenuItem;
 const clipboard = require('electron').clipboard;
 const Vue = require('vue');
-var setting = JSON.parse(localStorage["ulttwiclient"]);
+var setting = JSON.parse(localStorage["ulttwiclient"] || '{}');
 console.log(setting.tokens);
 
 window.addEventListener('load',()=>{
