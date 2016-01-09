@@ -13,10 +13,11 @@
       <button v-on:click="sendTweet(newTweet)" v-bind:disabled="isExceededTweet">ツイート</button>
       <span v-bind:class="{ 'long_tweet': isLongTweet, 'exceeded_tweet': isExceededTweet }">{{ calculateRemainChar }}</span>
       <button v-on:click="startStreaming()" v-bind:disabled="streaming">ストリーミング</button>
-      <span>残り {{ calculateRemainChar }}文字</span>
-      返信先
-      <input type="text" disabled="disabled" v-model="newTweet.in_reply_to_status_id">
-      <button v-on:click="clearReply()">リプライをやめる</button>
+      <div v-if="newTweet.in_reply_to_status_id">
+      <button v-on:click="clearReply()">X</button>
+      <img class="in_reply_to_user_icon" v-bind:src="sendReplyDestTweet.user.profile_image_url_https">
+        {{ sendReplyDestTweet.text }}
+      </div>
     </div>
     <div id="image_view" v-if="showingImage" v-on:click="closeImage()">
       <img v-bind:src="image.url" v-bind:width="image.width" v-bind:height="image.height" v-on:contextmenu="contextMenuOnImage()">
