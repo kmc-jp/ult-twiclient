@@ -6,6 +6,7 @@ const clipboard = require('electron').clipboard;
 const dialog = remote.dialog;
 const path = require('path');
 const Vue = require('vue');
+require('twitter-text');
 var setting = JSON.parse(localStorage["ulttwiclient"] || '{}');
 console.log(setting.tokens);
 
@@ -46,11 +47,19 @@ window.addEventListener('load',()=>{
       showingImage: false,
       image: {},
       tweets: [],
-      notifications: []
+      notifications: [],
+      maxTweetLength: 140,
+      borderOfLongTweet: 20
     },
     computed: {
       calculateRemainChar: function() {
-        return 140 - this.newTweet.text.length;
+        return this.maxTweetLength - twttr.txt.getTweetLength(this.newTweet.text);
+      },
+      isLongTweet: function() {
+        return this.borderOfLongTweet > this.calculateRemainChar;
+      },
+      isExceededTweet: function() {
+        return this.calculateRemainChar < 0;
       }
     },
     methods: {
@@ -144,8 +153,7 @@ window.addEventListener('load',()=>{
             this.createNotification("ツイートをいいね取り消ししました", tweet.text, null, 'unfavorite');
           else
             this.createNotification("ツイートをいいねしました", tweet.text, null, 'favorite');
-          tweet.favorited = _tweet.favorited;
-          tweet.favotite_count = _tweet.favorite_count;
+          Object.assign(tweet, _tweet);
         });
       },
       showImage: function(url, size) {
@@ -207,6 +215,11 @@ window.addEventListener('load',()=>{
             this.createNotification('画像の保存に成功しました', basename, null, 'success');
           });
         });
+      },
+      detectKeyDown: function(event) {
+        if (event.ctrlKey && event.keyIdentifier == "Enter" && document.activeElement == this.$els.submit_box) {
+          this.sendTweet(this.newTweet);
+        }
       }
     }
   });
