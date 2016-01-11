@@ -52,7 +52,7 @@
           <div class="tweet_info">
             <div>{{ body(tweet).user.name }} @{{ body(tweet).user.screen_name }}</div>
             <span>
-              {{{ body(tweet).text | expand_url body(tweet).entities | html_escape | twemoji }}}
+              {{{ body(tweet).text | expand_url body(tweet).entities | twemoji }}}
             </span>
             <div v-if="hasMedias(tweet)">
               <img v-for="media in tweet.extended_entities.media"
