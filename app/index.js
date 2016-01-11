@@ -177,6 +177,9 @@ window.addEventListener('load',()=>{
       isMentionsForYou: function(tweet) {
         return tweet.text.match('@' + this.me.screen_name) && !tweet.retweeted_status;
       },
+      body: function (tweet){
+        return tweet.retweeted_status || tweet;
+      },
       deleteTweet: function(id_str) {
         this.tweets.forEach((t,i) => {
           if (t.id_str === id_str)
