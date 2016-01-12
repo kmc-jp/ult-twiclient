@@ -10,11 +10,9 @@ const oauth = new Oauth({
     callback: 'http://twitter.com/'
 });
 
-console.log("saitama");
 var requestToken, requestTokenSecret;
 export default {getOauthUrl, getTokens, getApi};
 function getOauthUrl(){
-  console.log("getOauth");
   return new Promise((resolve, reject)=>{
     oauth.getRequestToken((error, _requestToken, _requestTokenSecret, results)=>{
       if (error) {
@@ -32,20 +30,16 @@ function getTokens(oauth_verifier){
   return new Promise((resolve, reject)=>{
     oauth.getAccessToken(requestToken, requestTokenSecret, oauth_verifier,
       (error, accessToken, accessTokenSecret, results)=>{
-        console.log("getAccessToken");
         if (error) {
-          console.error("Error accessToken", error);
           reject("error accessToken: "+error);
         } else {
-            console.log("verifyCredentials");
           oauth.verifyCredentials(accessToken, accessTokenSecret,
             (error, data, response)=>{
               if (error) {
-                console.error("Error Credentials", error);
                 reject("error Credentials: "+error);
               } else {
                 console.log(accessToken, accessTokenSecret);
-                console.log(data["screen_name"]);
+                console.log("verified", data["screen_name"]);
                 var tokens = {
                   consumer_key: consumerKey,
                   consumer_secret: consumerSecret,
