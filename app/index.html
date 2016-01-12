@@ -61,10 +61,10 @@
                    v-on:click="showImage(media.media_url, media.sizes.small)"
                    class="photo_thumbnail">
             </div>
-            <div v-if="tweet.in_reply_to_status">
+            <div v-if="body(tweet).in_reply_to_status">
               <img class="in_reply_to_user_icon"
-                   v-bind:src="tweet.in_reply_to_status.user.profile_image_url_https">
-                {{ tweet.in_reply_to_status.text }}
+                   v-bind:src="body(tweet).in_reply_to_status.user.profile_image_url_https">
+                {{ body(tweet).in_reply_to_status.text }}
             </div>
             <div>
               <span v-on:click="favoriteTweet(body(tweet))">
