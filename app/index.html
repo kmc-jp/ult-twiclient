@@ -58,10 +58,18 @@
               {{{ body(tweet).text | expand_url body(tweet).entities | twemoji }}}
             </span>
             <div v-if="hasMedias(tweet)">
-              <img v-for="media in body(tweet).extended_entities.media"
-                   v-bind:src="media.media_url" v-bind:width="media"
-                   v-on:click="showMedia(media)"
-                   class="photo_thumbnail">
+              <span v-for="media in body(tweet).extended_entities.media">
+                <span v-if="media.type == 'photo'">
+                  <img v-bind:src="media.media_url" v-bind:width="media"
+                  v-on:click="showMedia(media)"
+                  class="photo_thumbnail">
+                </span>
+                <span v-else class="video_thumbnail" v-on:click="showMedia(media)">
+                  <img v-bind:src="media.media_url" v-bind:width="media"
+                  class="photo_thumbnail">
+                  <img src="../image/play_icon.png" class="play_icon">
+                </span>
+              </span>
             </div>
             <div>
               <span v-on:click="favoriteTweet(body(tweet))">
