@@ -79,13 +79,15 @@ window.addEventListener('load',()=>{
           api.get('statuses/show', {id: _tweet.in_reply_to_status_id_str},
             (error, in_reply_to_status, response)=>{
             if (!error){
-              if (in_reply_to_status) {
-                _tweet.in_reply_to_status = {};
-                Object.assign(_tweet.in_reply_to_status, in_reply_to_status);
-              }
+              _tweet.in_reply_to_status = {};
+              Object.assign(_tweet.in_reply_to_status, in_reply_to_status);
               this.tweets.push(tweet);
+            } else {
+              console.error(error);
             }
           });
+        } else {
+          this.tweets.push(tweet);
         }
       },
       sendTweet: function (params) {
