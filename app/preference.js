@@ -6,6 +6,7 @@ function main(){
   getOauthUrl().then((url)=>{
 
       const oauthWin = document.getElementById('oauthWin');
+            oauthNotify = document.getElementById('oauthNotify');
       oauthWin.src = url;
       oauthWin.addEventListener('did-finish-load', ()=>{
         console.log(oauthWin.getURL());
@@ -18,6 +19,7 @@ function main(){
             };
             localStorage["ulttwiclient"] = JSON.stringify(setting);
             console.log(getApi(tokens));
+            oauthNotify.textContent = "successed verify"
           }, (reason)=>{ console.error(reason); });
 
         }
