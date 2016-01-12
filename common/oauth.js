@@ -7,7 +7,7 @@ const consumerKey = "STEtjjUGjw5bhdCjE1bdRxMh3",
 const oauth = new Oauth({
     consumerKey,
     consumerSecret,
-    callback: 'oob'
+    callback: 'http://twitter.com/'
 });
 
 console.log("saitama");
