@@ -73,6 +73,32 @@ window.addEventListener('load',()=>{
       }
     },
     methods: {
+      addTweet: function (tweet) {
+        let _tweet = this.body(tweet);
+        (()=>{
+          return new Promise((resolve, reject)=>{
+            if (_tweet.in_reply_to_status_id_str) {
+              api.get('statuses/show', {id: _tweet.in_reply_to_status_id_str}, (error, __tweet, response)=>{
+                if (error){
+                  reject(error);
+                  return;
+                } else {
+                  resolve(__tweet);
+                }
+              });
+            } else {
+              resolve(undefined);
+            }
+          });
+        })().then((in_reply_to_status)=>{
+          if (typeof in_reply_to_status == 'undefined') {
+            return this.tweets.push(tweet);
+          }
+          _tweet.in_reply_to_status = {};
+          Object.assign(_tweet.in_reply_to_status, in_reply_to_status);
+          this.tweets.push(tweet);
+        });
+      },
       sendTweet: function (params) {
         api.post('statuses/update', {
           status: params.text,
@@ -121,7 +147,7 @@ window.addEventListener('load',()=>{
               // catch some event
             } else {
               // status
-              this.tweets.push(data);
+              this.addTweet(data);
               if (this.isMentionsForYou(data)) {
                 this.createNotification("あなた宛のメンションがあります", data.text, data.user.profile_image_url_https, 'tweet');
               }
@@ -250,7 +276,7 @@ window.addEventListener('load',()=>{
       }
       console.log('tweets',tweets.map((t)=>t.text).join("\n"), tweets);
       tweets.forEach((tweet)=>{
-        vm.tweets.push(tweet);
+        vm.addTweet(tweet);
       });
     });
     vm.startStreaming();
