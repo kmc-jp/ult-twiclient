@@ -54,8 +54,9 @@ window.addEventListener('load',()=>{
       sendReplyDestTweet: {},
       me: {},
       streaming: false,
-      showingImage: false,
+      showingMediaType: '',
       image: {},
+      video: {},
       tweets: [],
       notifications: [],
       maxTweetLength: 140,
@@ -168,11 +169,28 @@ window.addEventListener('load',()=>{
       },
       showImage: function(url, size) {
         this.image = {url: url, width: size.w, height: size.h};
-        this.showingImage = true;
+        this.showingMediaType = 'photo';
       },
-      closeImage: function() {
+      showVideo: function(url, mimetype) {
+        this.video = {url, mimetype};
+        this.showingMediaType = 'video';
+      },
+      showMedia: function(media) {
+        if(media.type == 'photo')
+          this.showImage(media.media_url, media.sizes.small);
+        else {
+          media.video_info.variants.some((v) => {
+            if (v.content_type == 'video/mp4') {
+              this.showVideo(v.url, v.content_type);
+              return true;
+            }
+          });
+        }
+      },
+      closeMedia: function() {
         this.image = {};
-        this.showingImage = false;
+        this.video = {};
+        this.showingMediaType = '';
       },
       sendReply: function(tweet) {
         console.log(tweet.id_str);

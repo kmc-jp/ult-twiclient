@@ -59,7 +59,7 @@ input, textarea, keygen, select, button, isindex, datagrid {
   cursor: pointer;
 }
 
-#image_view {
+#media_view {
   position: fixed;
   left: 0;
   top: 0;
@@ -68,7 +68,7 @@ input, textarea, keygen, select, button, isindex, datagrid {
   background-color: rgba(0, 0, 0, 0.6);
 }
 
-#image_view img {
+#media_view img, #media_view video {
   position: absolute;
   top: 50%;
   left: 50%;

@@ -30,9 +30,12 @@
       </div>
     </div>
 
-    <div id="image_view" v-if="showingImage" v-on:click="closeImage()">
-      <img v-bind:src="image.url" v-bind:width="image.width"
+    <div id="media_view" v-if="showingMediaType != ''" v-on:click="closeMedia()">
+      <img v-if="showingMediaType == 'photo'" v-bind:src="image.url" v-bind:width="image.width"
            v-bind:height="image.height" v-on:contextmenu="contextMenuOnImage()">
+      <video controls autoplay loop v-if="showingMediaType == 'video'">
+        <source v-bind:src="video.url" v-bind:type="video.mimetype">
+      </video>
     </div>
 
     <div id="outline">
@@ -55,10 +58,9 @@
               {{{ body(tweet).text | expand_url body(tweet).entities | twemoji }}}
             </span>
             <div v-if="hasMedias(tweet)">
-              <img v-for="media in tweet.extended_entities.media"
-                   v-if="media.type == 'photo'"
+              <img v-for="media in body(tweet).extended_entities.media"
                    v-bind:src="media.media_url" v-bind:width="media"
-                   v-on:click="showImage(media.media_url, media.sizes.small)"
+                   v-on:click="showMedia(media)"
                    class="photo_thumbnail">
             </div>
             <div>
