@@ -54,6 +54,7 @@ window.addEventListener('load',()=>{
       sendReplyDestTweet: {},
       me: {},
       streaming: false,
+      pending: false,
       showingImage: false,
       image: {},
       tweets: [],
@@ -74,10 +75,12 @@ window.addEventListener('load',()=>{
     },
     methods: {
       sendTweet: function (params) {
+        this.pending = true;
         api.post('statuses/update', {
           status: params.text,
           in_reply_to_status_id: params.in_reply_to_status_id
         }, (error, tweet, response)=>{
+          this.pending = false;
           if (error) {
             this.createNotification("ツイートの投稿に失敗しました", this.newTweet.text, null, 'fail');
             return console.log('error', error.map((e)=>e.message).join("\n"),  error);
@@ -153,7 +156,9 @@ window.addEventListener('load',()=>{
         console.log(tweet.id_str);
         var favorites_url = tweet.favorited ? 'favorites/destroy' : 'favorites/create';
         var favorites_id = tweet.retweeted_status ? tweet.retweeted_status.id_str : tweet.id_str
+        this.pending = true;
         api.post(favorites_url, {id: favorites_id}, (error, _tweet, response)=>{
+          this.pending = false;
           if (error) {
             this.createNotification("ツイートをいいねできませんでした", tweet.text, null, 'fail');
             return console.log('error', error.map((e)=>e.message).join("\n"),  error);

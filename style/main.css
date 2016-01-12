@@ -33,6 +33,10 @@ input, textarea, keygen, select, button, isindex, datagrid {
   flex-direction: row;
 }
 
+.pending {
+  cursor: progress;
+}
+
 #tweets li.odd-number {
   background-color: hsl(188, 100%, 88%);
 }
