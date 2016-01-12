@@ -75,29 +75,20 @@ window.addEventListener('load',()=>{
     methods: {
       addTweet: function (tweet) {
         let _tweet = this.body(tweet);
-        (()=>{
-          return new Promise((resolve, reject)=>{
-            if (_tweet.in_reply_to_status_id_str) {
-              api.get('statuses/show', {id: _tweet.in_reply_to_status_id_str}, (error, __tweet, response)=>{
-                if (error){
-                  reject(error);
-                  return;
-                } else {
-                  resolve(__tweet);
-                }
-              });
+        if (_tweet.in_reply_to_status_id_str) {
+          api.get('statuses/show', {id: _tweet.in_reply_to_status_id_str},
+            (error, in_reply_to_status, response)=>{
+            if (!error){
+              _tweet.in_reply_to_status = {};
+              Object.assign(_tweet.in_reply_to_status, in_reply_to_status);
+              this.tweets.push(tweet);
             } else {
-              resolve(undefined);
+              console.error(error);
             }
           });
-        })().then((in_reply_to_status)=>{
-          if (typeof in_reply_to_status == 'undefined') {
-            return this.tweets.push(tweet);
-          }
-          _tweet.in_reply_to_status = {};
-          Object.assign(_tweet.in_reply_to_status, in_reply_to_status);
+        } else {
           this.tweets.push(tweet);
-        });
+        }
       },
       sendTweet: function (params) {
         api.post('statuses/update', {
