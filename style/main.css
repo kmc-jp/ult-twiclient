@@ -131,6 +131,10 @@ input, textarea, keygen, select, button, isindex, datagrid {
   margin-top: 75px;
 }
 
+.created_at {
+  text-align: right;
+}
+
 .retweeted_by {
   text-align: right;
 }
