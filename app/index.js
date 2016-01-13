@@ -10,14 +10,18 @@ require('twitter-text');
 var setting = JSON.parse(localStorage["ulttwiclient"] || '{}');
 console.log(setting.tokens);
 
+function anchorHTML(text, href) {
+  return '<a href="javascript:void(0);" onClick="require(\'shell\').openExternal(\''+href+'\')">'+text+'</a>'
+}
+
 window.addEventListener('load',()=>{
   Vue.filter('expand_url', function (text, entities){
     entities.urls.forEach((url)=>{
-      text = text.replace(url.url, url.display_url);
+      text = text.replace(url.url, anchorHTML(url.display_url, url.expanded_url));
     });
     if (entities.media) {
       entities.media.forEach((m)=>{
-        text = text.replace(m.url, m.display_url);
+        text = text.replace(m.url, anchorHTML(m.display_url, m.expanded_url));
       });
     }
     return text;
