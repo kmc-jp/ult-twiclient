@@ -7,7 +7,8 @@
 </head>
 
 <body>
-  <div id="container" v-on:keypress="detectKeyDown($event)" tabindex="-1">
+  <div id="container" v-on:keypress="detectKeyDown($event)" tabindex="-1"
+       v-bind:class="{'pending': pending}">
 
     <div id="topbar">
       this is the ultimate twitter client !!!!
