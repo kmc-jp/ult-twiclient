@@ -59,7 +59,8 @@ window.addEventListener('load',()=>{
       tweets: [],
       notifications: [],
       maxTweetLength: 140,
-      borderOfLongTweet: 20
+      borderOfLongTweet: 20,
+      nowTime: new Date()
     },
     computed: {
       calculateRemainChar: function() {
@@ -233,6 +234,21 @@ window.addEventListener('load',()=>{
         if (event.ctrlKey && event.keyIdentifier == "Enter" && document.activeElement == this.$els.submit_box) {
           this.sendTweet(this.newTweet);
         }
+      },
+      convertTime: function(time) {
+        let date = new Date(time);
+        let diff = Math.floor((this.nowTime.getTime() - date.getTime()) / 1000);
+        if (diff < 60) {
+          return diff + "秒";
+        } else if (diff < 3600) {
+          return Math.floor(diff / 60) + "分";
+        } else if (diff < 86400) {
+          return Math.floor(diff / 3600) + "時間";
+        } else if (diff < 31536000) {
+          return Math.floor(diff / 86400) + "日";
+        } else {
+          return Math.floor(diff / 31536000) + "年";
+        }
       }
     }
   });
@@ -254,6 +270,9 @@ window.addEventListener('load',()=>{
       });
     });
     vm.startStreaming();
+    window.setInterval(()=>{
+      vm.nowTime = new Date();
+    }, 1000);
   }else{
     console.warn("did not oauth");
   }
