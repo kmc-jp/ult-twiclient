@@ -50,6 +50,16 @@ input, textarea, keygen, select, button, isindex, datagrid {
   width: 100%;
 }
 
+.url {
+  color: hsl(10, 100%, 50%);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.url:hover {
+  color: hsl(10, 100%, 20%);
+}
+
 .photo_thumbnail {
   width: 80px;
   height: 80px;
