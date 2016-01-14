@@ -41,6 +41,8 @@ window.addEventListener('load',()=>{
     {label: "ツイートに返信する", click: ()=>{vm.sendReply(vm.selectedTweet);}},
     {label: "ツイートをふぁぼる", click: ()=>{vm.favoriteTweet(vm.selectedTweet);}},
     {type: 'separator'},
+    {label: "ツイートをブラウザで開く", click: ()=>{clipboard.writeText(vm.jumpToTwitterURL(vm.selectedTweet));}},
+    {label: "ツイートのURLを取得", click: ()=>{clipboard.writeText(vm.createTwitterURL(vm.selectedTweet));}},
     {label: "ツイートのJSONを取得", click: ()=>{clipboard.writeText(JSON.stringify(vm.selectedTweet));}}
   ]);
   // context menu on image
@@ -193,6 +195,12 @@ window.addEventListener('load',()=>{
       },
       body: function (tweet){
         return tweet.retweeted_status || tweet;
+      },
+      createTwitterURL: function (tweet){
+        return 'https://twitter.com/' + tweet.user.screen_name + '/status/' + tweet.id_str;
+      },
+      jumpToTwitterURL: function (tweet){
+        require('shell').openExternal(this.createTwitterURL(tweet));
       },
       deleteTweet: function(id_str) {
         this.tweets.forEach((t,i) => {

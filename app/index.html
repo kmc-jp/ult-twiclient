@@ -68,6 +68,9 @@
                 {{ body(tweet).favorite_count }}
               </span>
             </div>
+            <div class="created_at url" v-on:click="jumpToTwitterURL(tweet)">
+              {{ convertTime(body(tweet).created_at) }}
+            </div>
             <div class="retweeted_by" v-if="tweet.retweeted_status">
               retweeted by @{{ tweet.user.screen_name }}
             </div>
