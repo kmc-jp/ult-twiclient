@@ -11,7 +11,7 @@ var setting = JSON.parse(localStorage["ulttwiclient"] || '{}');
 console.log(setting.tokens);
 
 function anchorHTML(text, href) {
-  return '<a href="javascript:void(0);" onClick="require(\'shell\').openExternal(\''+href+'\')">'+text+'</a>'
+  return '<a onClick="require(\'shell\').openExternal(\''+href+'\')" class="url">'+text+'</a>'
 }
 
 window.addEventListener('load',()=>{
