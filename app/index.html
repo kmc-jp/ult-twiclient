@@ -66,6 +66,9 @@
                    v-on:click="showImage(media.media_url, media.sizes.small)"
                    class="photo_thumbnail">
             </div>
+            <small-tweet v-if="body(tweet).quoted_status"
+                        :tweet="body(tweet).quoted_status" :replysender="false">
+            </small-tweet>
             <small-tweet v-if="body(tweet).in_reply_to_status"
                         :tweet="body(tweet).in_reply_to_status" :replysender="false">
             </small-tweet>
