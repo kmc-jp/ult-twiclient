@@ -73,6 +73,9 @@
               <div class="url created_at" v-on:click="jumpToTwitterURL(tweet)">
                 {{ convertTime(body(tweet).created_at) }}
               </div>
+              <div class="via">
+                via {{ body(tweet).source | text_content }}
+              </div>
             </div>
           </div>
 
