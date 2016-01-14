@@ -148,6 +148,10 @@ input, textarea, keygen, select, button, isindex, datagrid {
   flex-grow: 1;
 }
 
+.favorite {
+  cursor: pointer;
+}
+
 img.emoji {
   height: 1em;
   width: 1em;
