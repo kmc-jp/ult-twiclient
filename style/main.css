@@ -138,12 +138,14 @@ input, textarea, keygen, select, button, isindex, datagrid {
   margin-top: 75px;
 }
 
-.created_at {
-  text-align: right;
+.infobar {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 }
 
-.retweeted_by {
-  text-align: right;
+.spacing {
+  flex-grow: 1;
 }
 
 img.emoji {

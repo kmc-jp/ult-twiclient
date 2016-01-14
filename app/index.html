@@ -60,20 +60,19 @@
                    v-on:click="showImage(media.media_url, media.sizes.small)"
                    class="photo_thumbnail">
             </div>
-            <div>
-              <span v-on:click="favoriteTweet(body(tweet))">
+            <div class="infobar">
+              <div class="favorite" v-on:click="favoriteTweet(body(tweet))">
                 <span v-if="body(tweet).favorited">🍣</span>
                 <span v-else>🍚</span>
                 {{ body(tweet).favorite_count }}
-              </span>
-            </div>
-            <div class="created_at">
-              <span class="url" v-on:click="jumpToTwitterURL(tweet)">
+              </div>
+              <div class="spacing"></div>
+              <div class="retweeted_by" v-if="tweet.retweeted_status">
+                retweeted by @{{ tweet.user.screen_name }}
+              </div>
+              <div class="url created_at" v-on:click="jumpToTwitterURL(tweet)">
                 {{ convertTime(body(tweet).created_at) }}
-              </span>
-            </div>
-            <div class="retweeted_by" v-if="tweet.retweeted_status">
-              retweeted by @{{ tweet.user.screen_name }}
+              </div>
             </div>
           </div>
 
