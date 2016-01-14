@@ -10,18 +10,14 @@ require('twitter-text');
 var setting = JSON.parse(localStorage["ulttwiclient"] || '{}');
 console.log(setting.tokens);
 
-function anchorHTML(text, href) {
-  return '<a onClick="require(\'shell\').openExternal(\''+href+'\')" class="url">'+text+'</a>'
-}
-
 window.addEventListener('load',()=>{
   Vue.filter('expand_url', function (text, entities){
     entities.urls.forEach((url)=>{
-      text = text.replace(url.url, anchorHTML(url.display_url, url.expanded_url));
+      text = text.replace(url.url, url.display_url);
     });
     if (entities.media) {
       entities.media.forEach((m)=>{
-        text = text.replace(m.url, anchorHTML(m.display_url, m.expanded_url));
+        text = text.replace(m.url, m.display_url);
       });
     }
     return text;
@@ -41,8 +37,6 @@ window.addEventListener('load',()=>{
     {label: "ツイートに返信する", click: ()=>{vm.sendReply(vm.selectedTweet);}},
     {label: "ツイートをふぁぼる", click: ()=>{vm.favoriteTweet(vm.selectedTweet);}},
     {type: 'separator'},
-    {label: "ツイートをブラウザで開く", click: ()=>{clipboard.writeText(vm.jumpToTwitterURL(vm.selectedTweet));}},
-    {label: "ツイートのURLを取得", click: ()=>{clipboard.writeText(vm.createTwitterURL(vm.selectedTweet));}},
     {label: "ツイートのJSONを取得", click: ()=>{clipboard.writeText(JSON.stringify(vm.selectedTweet));}}
   ]);
   // context menu on image
@@ -196,12 +190,6 @@ window.addEventListener('load',()=>{
       },
       body: function (tweet){
         return tweet.retweeted_status || tweet;
-      },
-      createTwitterURL: function (tweet){
-        return 'https://twitter.com/' + tweet.user.screen_name + '/status/' + tweet.id_str;
-      },
-      jumpToTwitterURL: function (tweet){
-        require('shell').openExternal(this.createTwitterURL(tweet));
       },
       deleteTweet: function(id_str) {
         this.tweets.forEach((t,i) => {
