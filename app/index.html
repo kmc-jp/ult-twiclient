@@ -40,7 +40,6 @@
         <li v-for="tweet in tweets | orderBy 'id' -1"
             v-bind:class="{
               'retweeted_status': tweet.retweeted_status,
-              'odd-number': (tweets.length - $index) % 2 == 1,
               'mentions_for_you': isMentionsForYou(tweet)
             }"
             v-on:contextmenu="contextMenuOnTweet(tweet)">
