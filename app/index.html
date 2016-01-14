@@ -7,6 +7,14 @@
 </head>
 
 <body>
+  <template id="small-tweet" style="display: none;">
+    <div>
+      <button v-on:click="vm.clearReply()" v-if="replysender">X</button>
+      <img class="small_user_icon"
+           v-bind:src="tweet.user.profile_image_url_https">
+        {{ tweet.text }}
+    </div>
+  </template>
   <div id="container" v-on:keypress="detectKeyDown($event)" tabindex="-1">
 
     <div id="topbar">
@@ -22,12 +30,9 @@
       <button v-on:click="startStreaming()" v-bind:disabled="streaming">
         ストリーミング
       </button>
-      <div v-if="newTweet.in_reply_to_status_id">
-        <button v-on:click="clearReply()">X</button>
-        <img class="in_reply_to_user_icon"
-             v-bind:src="sendReplyDestTweet.user.profile_image_url_https">
-          {{ sendReplyDestTweet.text }}
-      </div>
+      <small-tweet v-if="newTweet.in_reply_to_status_id"
+                  :tweet="sendReplyDestTweet" :replysender="true">
+      </small-tweet>
     </div>
 
     <div id="image_view" v-if="showingImage" v-on:click="closeImage()">
@@ -61,11 +66,9 @@
                    v-on:click="showImage(media.media_url, media.sizes.small)"
                    class="photo_thumbnail">
             </div>
-            <div v-if="body(tweet).in_reply_to_status">
-              <img class="in_reply_to_user_icon"
-                   v-bind:src="body(tweet).in_reply_to_status.user.profile_image_url_https">
-                {{ body(tweet).in_reply_to_status.text }}
-            </div>
+            <small-tweet v-if="body(tweet).in_reply_to_status"
+                        :tweet="body(tweet).in_reply_to_status" :replysender="false">
+            </small-tweet>
             <div>
               <span v-on:click="favoriteTweet(body(tweet))">
                 <span v-if="body(tweet).favorited">🍣</span>

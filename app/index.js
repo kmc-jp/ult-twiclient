@@ -32,6 +32,16 @@ window.addEventListener('load',()=>{
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
   });
+  Vue.component('small-tweet', {
+    template: '#small-tweet',
+    props: {
+      tweet: Object,
+      replysender: Boolean
+    },
+    data: function() {
+      return {vm}
+    }
+  });
   // context menu on status
   var contextMenuForTweet = Menu.buildFromTemplate([
     {label: "ツイートに返信する", click: ()=>{vm.sendReply(vm.selectedTweet);}},
