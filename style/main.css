@@ -34,8 +34,16 @@ input, textarea, keygen, select, button, isindex, datagrid {
   flex-direction: row;
 }
 
+#tweets li.selected {
+  background-color: hsl(188, 100%, 77%);
+}
+
 #tweets li.retweeted_status {
   background-color: hsl(100, 100%, 88%);
+}
+
+#tweets li.retweeted_status.selected {
+  background-color: hsl(100, 100%, 77%);
 }
 
 #tweets li.with_photo_thumbnails {
@@ -45,6 +53,11 @@ input, textarea, keygen, select, button, isindex, datagrid {
 #tweets li.mentions_for_you {
   background-color: hsl(0, 100%, 88%);
 }
+
+#tweets li.mentions_for_you.selected {
+  background-color: hsl(0, 100%, 77%);
+}
+
 
 #tweets .tweet_info {
   width: 100%;

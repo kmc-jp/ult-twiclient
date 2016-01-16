@@ -188,6 +188,9 @@ window.addEventListener('load',()=>{
           });
         });
       },
+      selectTweet: function (tweet) {
+        this.selectedTweet = tweet;
+      },
       favoriteTweet: function (tweet) {
         console.log(tweet.id_str);
         var favorites_url = tweet.favorited ? 'favorites/destroy' : 'favorites/create';
@@ -259,7 +262,7 @@ window.addEventListener('load',()=>{
         })
       },
       contextMenuOnTweet: function(tweet) {
-        this.selectedTweet = tweet;
+        this.selectTweet(tweet);
         contextMenuForTweet.popup(remote.getCurrentWindow());
       },
       contextMenuOnImage: function() {

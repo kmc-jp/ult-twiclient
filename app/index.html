@@ -45,9 +45,11 @@
         <li v-for="tweet in tweets | orderBy 'id' -1"
             v-bind:class="{
               'retweeted_status': tweet.retweeted_status,
-              'mentions_for_you': isMentionsForYou(tweet)
+              'mentions_for_you': isMentionsForYou(tweet),
+              'selected': tweet.id_str == selectedTweet.id_str
             }"
-            v-on:contextmenu="contextMenuOnTweet(tweet)">
+            v-on:contextmenu="contextMenuOnTweet(tweet)"
+            v-on:click="selectTweet(tweet)">
           <div class="user_icon">
             <img v-bind:src="body(tweet).user.profile_image_url"
                  v-on:click="sendReply(body(tweet))">
@@ -68,7 +70,7 @@
             <small-tweet v-if="body(tweet).quoted_status"
                         :tweet="body(tweet).quoted_status" :replysender="false">
             </small-tweet>
-            <small-tweet v-if="body(tweet).in_reply_to_status"
+            <small-tweet v-if="body(tweet).in_reply_to_status && selectedTweet.id_str == tweet.id_str"
                         :tweet="body(tweet).in_reply_to_status" :replysender="false">
             </small-tweet>
             <div>
