@@ -46,6 +46,11 @@ window.addEventListener('load',()=>{
       return {vm}
     }
   });
+  Vue.filter('text_content', function (html){
+    let dom = document.createElement('div');
+    dom.innerHTML = html;
+    return dom.firstChild.textContent;
+  });
   // context menu on status
   var contextMenuForTweet = Menu.buildFromTemplate([
     {label: "ツイートに返信する", click: ()=>{vm.sendReply(vm.selectedTweet);}},
