@@ -118,6 +118,7 @@ input, textarea, keygen, select, button, isindex, datagrid {
 }
 
 .user_icon {
+  background-color: white;
   width: 48px;
   height: 48px;
   position: relative;
