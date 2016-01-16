@@ -35,9 +35,12 @@
       </small-tweet>
     </div>
 
-    <div id="image_view" v-if="showingImage" v-on:click="closeImage()">
-      <img v-bind:src="image.url" v-bind:width="image.width"
+    <div id="media_view" v-if="showingMediaType != ''" v-on:click="closeMedia()">
+      <img v-if="showingMediaType == 'photo'" v-bind:src="image.url" v-bind:width="image.width"
            v-bind:height="image.height" v-on:contextmenu="contextMenuOnImage()">
+      <video controls autoplay loop v-if="showingMediaType == 'video'">
+        <source v-bind:src="video.url" v-bind:type="video.mimetype">
+      </video>
     </div>
 
     <div id="outline">
@@ -64,11 +67,18 @@
               {{{ body(tweet).text | expand_url body(tweet).entities | twemoji }}}
             </span>
             <div v-if="hasMedias(tweet)">
-              <img v-for="media in tweet.extended_entities.media"
-                   v-if="media.type == 'photo'"
-                   v-bind:src="media.media_url" v-bind:width="media"
-                   v-on:click="showImage(media.media_url, media.sizes.small)"
-                   class="photo_thumbnail">
+              <span v-for="media in body(tweet).extended_entities.media">
+                <span v-if="media.type == 'photo'">
+                  <img v-bind:src="media.media_url" v-bind:width="media"
+                  v-on:click="showMedia(media)"
+                  class="photo_thumbnail">
+                </span>
+                <span v-else class="video_thumbnail" v-on:click="showMedia(media)">
+                  <img v-bind:src="media.media_url" v-bind:width="media"
+                  class="photo_thumbnail">
+                  <img src="../image/play_icon.svg" class="play_icon">
+                </span>
+              </span>
             </div>
             <small-tweet v-if="body(tweet).quoted_status"
                         :tweet="body(tweet).quoted_status" :replysender="false">
