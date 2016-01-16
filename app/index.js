@@ -191,6 +191,15 @@ window.addEventListener('load',()=>{
       selectTweet: function (tweet) {
         this.selectedTweet = tweet;
       },
+      toggleSelectedTweet: function (tweet) {
+        if (this.isSelectedTweet(tweet))
+          this.selectedTweet = {}
+        else
+          this.selectTweet(tweet);
+      },
+      isSelectedTweet: function(tweet) {
+        return this.selectedTweet && this.selectedTweet.id_str == tweet.id_str;
+      },
       favoriteTweet: function (tweet) {
         console.log(tweet.id_str);
         var favorites_url = tweet.favorited ? 'favorites/destroy' : 'favorites/create';
