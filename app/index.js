@@ -163,18 +163,18 @@ window.addEventListener('load',()=>{
               // status
               this.addTweet(data);
               if (this.isMentionsForYou(data)) {
-                this.createNotification("あなた宛のメンションがあります", data.text, data.user.profile_image_url_https, 'tweet');
+                this.createNotification(data.user.name+" さんからあなた宛のメンションがあります", data.text, data.user.profile_image_url_https, 'tweet');
               }
             }
           });
           stream.on('favorite', (data)=>{
             if (data.target.screen_name === this.me.screen_name) {
-              this.createNotification("あなたのツイートがいいねされました", data.target_object.text, data.target.profile_image_url_https, 'favorite');
+              this.createNotification("あなたのツイートが "+data.source.name+" にいいねされました", data.target_object.text, data.target.profile_image_url_https, 'favorite');
             }
           });
           stream.on('unfavorite', (data)=>{
             if (data.target.screen_name === this.me.screen_name) {
-              this.createNotification("あなたのツイートがいいね取り消しされました", data.target_object.text, data.target.profile_image_url_https, 'unfavorite');
+              this.createNotification("あなたのツイートが "+data.source.name+" にいいね取り消しされました", data.target_object.text, data.target.profile_image_url_https, 'unfavorite');
             }
           });
           stream.on('follow', (data)=>{
