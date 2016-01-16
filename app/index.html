@@ -93,7 +93,7 @@
                 <span v-else>{{{ '🍚' | twemoji }}}</span>
                 {{ body(tweet).favorite_count }}
               </div>
-              <div class="retweet" v-on:click="retweetTweet(tweet)">
+              <div class="retweet" v-on:click="retweetTweet(body(tweet))">
                 <span v-if="body(tweet).retweeted">{{{ '🔃' | twemoji }}}</span>
                 <span v-else>{{{ '🔝' | twemoji }}}</span>
                 {{ body(tweet).retweet_count }}
