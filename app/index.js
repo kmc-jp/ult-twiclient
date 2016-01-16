@@ -218,6 +218,28 @@ window.addEventListener('load',()=>{
           Object.assign(tweet, _tweet);
         });
       },
+      retweetTweet: function (tweet) {
+        console.log(tweet.id_str);
+        var retweet_url = tweet.retweeted ? 'statuses/destroy' : 'statuses/retweet';
+        var retweet_id = tweet.id_str;
+        if (tweet.retweeted) {
+          api.get('statuses/show', {id: tweet.id_str, include_my_retweet: 1}, (error, _tweet, response)=>{
+            retweet_id = _tweet.current_user_retweet.id_str;
+          });
+        }
+        api.post(retweet_url, {id: retweet_id}, (error, _tweet, response)=>{
+          if (error) {
+            this.createNotification("ツイートをリツイートできませんでした", tweet.text, null, 'fail');
+            return console.log('error', error.map((e)=>e.message).join("\n"),  error);
+          }
+          console.log(_tweet, response);
+          if (tweet.retweeted)
+            this.createNotification("ツイートをリツイート取り消ししました", tweet.text, null, 'unfavorite');
+          else
+            this.createNotification("ツイートをリツイートしました", tweet.text, null, 'favorite');
+          Object.assign(tweet, _tweet);
+        });
+      },
       showImage: function(url, size) {
         this.image = {url: url, width: size.w, height: size.h};
         this.showingMediaType = 'photo';
