@@ -88,8 +88,8 @@
             </small-tweet>
             <div class="infobar">
               <div class="favorite" v-on:click="favoriteTweet(body(tweet))">
-                <span v-if="body(tweet).favorited">🍣</span>
-                <span v-else>🍚</span>
+                <span v-if="body(tweet).favorited">{{{ '🍣' | twemoji }}}</span>
+                <span v-else>{{{ '🍚' | twemoji }}}</span>
                 {{ body(tweet).favorite_count }}
               </div>
               <div class="spacing"></div>
