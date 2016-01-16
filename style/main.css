@@ -24,17 +24,14 @@ input, textarea, keygen, select, button, isindex, datagrid {
   -webkit-padding-start: 0;
 }
 #tweets li {
+  background-color: hsl(188, 100%, 88%);
   width: 100%;
   font-size: 10pt;
   list-style-type: none;
-  margin: 0px 5px;
+  margin: 2px 3px;
   min-height: 60px;
   display: flex;
   flex-direction: row;
-}
-
-#tweets li.odd-number {
-  background-color: hsl(188, 100%, 88%);
 }
 
 #tweets li.retweeted_status {
@@ -51,6 +48,16 @@ input, textarea, keygen, select, button, isindex, datagrid {
 
 #tweets .tweet_info {
   width: 100%;
+}
+
+.url {
+  color: hsl(10, 100%, 50%);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.url:hover {
+  color: hsl(10, 100%, 20%);
 }
 
 .photo_thumbnail {
@@ -129,6 +136,10 @@ input, textarea, keygen, select, button, isindex, datagrid {
 
 #outline {
   margin-top: 75px;
+}
+
+.created_at {
+  text-align: right;
 }
 
 .retweeted_by {

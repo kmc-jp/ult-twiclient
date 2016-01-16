@@ -10,14 +10,18 @@ require('twitter-text');
 var setting = JSON.parse(localStorage["ulttwiclient"] || '{}');
 console.log(setting.tokens);
 
+function anchorHTML(text, href) {
+  return '<a onClick="require(\'shell\').openExternal(\''+href+'\')" class="url">'+text+'</a>'
+}
+
 window.addEventListener('load',()=>{
   Vue.filter('expand_url', function (text, entities){
     entities.urls.forEach((url)=>{
-      text = text.replace(url.url, url.display_url);
+      text = text.replace(url.url, anchorHTML(url.display_url, url.expanded_url));
     });
     if (entities.media) {
       entities.media.forEach((m)=>{
-        text = text.replace(m.url, m.display_url);
+        text = text.replace(m.url, anchorHTML(m.display_url, m.expanded_url));
       });
     }
     return text;
@@ -47,6 +51,8 @@ window.addEventListener('load',()=>{
     {label: "ツイートに返信する", click: ()=>{vm.sendReply(vm.selectedTweet);}},
     {label: "ツイートをふぁぼる", click: ()=>{vm.favoriteTweet(vm.selectedTweet);}},
     {type: 'separator'},
+    {label: "ツイートをブラウザで開く", click: ()=>{clipboard.writeText(vm.jumpToTwitterURL(vm.selectedTweet));}},
+    {label: "ツイートのURLを取得", click: ()=>{clipboard.writeText(vm.createTwitterURL(vm.selectedTweet));}},
     {label: "ツイートのJSONを取得", click: ()=>{clipboard.writeText(JSON.stringify(vm.selectedTweet));}}
   ]);
   // context menu on image
@@ -69,7 +75,8 @@ window.addEventListener('load',()=>{
       tweets: [],
       notifications: [],
       maxTweetLength: 140,
-      borderOfLongTweet: 20
+      borderOfLongTweet: 20,
+      nowTime: new Date()
     },
     computed: {
       calculateRemainChar: function() {
@@ -217,6 +224,12 @@ window.addEventListener('load',()=>{
       body: function (tweet){
         return tweet.retweeted_status || tweet;
       },
+      createTwitterURL: function (tweet){
+        return 'https://twitter.com/' + tweet.user.screen_name + '/status/' + tweet.id_str;
+      },
+      jumpToTwitterURL: function (tweet){
+        require('shell').openExternal(this.createTwitterURL(tweet));
+      },
       deleteTweet: function(id_str) {
         this.tweets.forEach((t,i) => {
           if (t.id_str === id_str)
@@ -260,6 +273,21 @@ window.addEventListener('load',()=>{
         if (event.ctrlKey && event.keyIdentifier == "Enter" && document.activeElement == this.$els.submit_box) {
           this.sendTweet(this.newTweet);
         }
+      },
+      convertTime: function(time) {
+        let date = new Date(time);
+        let diff = Math.floor((this.nowTime.getTime() - date.getTime()) / 1000);
+        if (diff < 60) {
+          return diff + "秒";
+        } else if (diff < 3600) {
+          return Math.floor(diff / 60) + "分";
+        } else if (diff < 86400) {
+          return Math.floor(diff / 3600) + "時間";
+        } else if (diff < 31536000) {
+          return Math.floor(diff / 86400) + "日";
+        } else {
+          return Math.floor(diff / 31536000) + "年";
+        }
       }
     }
   });
@@ -281,6 +309,9 @@ window.addEventListener('load',()=>{
       });
     });
     vm.startStreaming();
+    window.setInterval(()=>{
+      vm.nowTime = new Date();
+    }, 1000);
   }else{
     console.warn("did not oauth");
   }

@@ -19,7 +19,7 @@
 
     <div id="topbar">
       this is the ultimate twitter client !!!!
-      <a href="./oauth.html">auth!</a>
+      <a href="./preference.html">pref.</a>
       <input type="text" v-model="newTweet.text" v-el:submit_box>
       <button v-on:click="sendTweet(newTweet)" v-bind:disabled="isExceededTweet">
         ツイート
@@ -45,7 +45,6 @@
         <li v-for="tweet in tweets | orderBy 'id' -1"
             v-bind:class="{
               'retweeted_status': tweet.retweeted_status,
-              'odd-number': (tweets.length - $index) % 2 == 1,
               'mentions_for_you': isMentionsForYou(tweet)
             }"
             v-on:contextmenu="contextMenuOnTweet(tweet)">
@@ -77,6 +76,11 @@
                 <span v-if="body(tweet).favorited">🍣</span>
                 <span v-else>🍚</span>
                 {{ body(tweet).favorite_count }}
+              </span>
+            </div>
+            <div class="created_at">
+              <span class="url" v-on:click="jumpToTwitterURL(tweet)">
+                {{ convertTime(body(tweet).created_at) }}
               </span>
             </div>
             <div class="retweeted_by" v-if="tweet.retweeted_status">
