@@ -36,6 +36,16 @@ window.addEventListener('load',()=>{
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
   });
+  Vue.component('small-tweet', {
+    template: '#small-tweet',
+    props: {
+      tweet: Object,
+      replysender: Boolean
+    },
+    data: function() {
+      return {vm}
+    }
+  });
   Vue.filter('text_content', function (html){
     let dom = document.createElement('div');
     dom.innerHTML = html;
@@ -85,6 +95,23 @@ window.addEventListener('load',()=>{
       }
     },
     methods: {
+      addTweet: function (tweet) {
+        let _tweet = this.body(tweet);
+        if (_tweet.in_reply_to_status_id_str) {
+          api.get('statuses/show', {id: _tweet.in_reply_to_status_id_str},
+            (error, in_reply_to_status, response)=>{
+            if (!error){
+              _tweet.in_reply_to_status = {};
+              Object.assign(_tweet.in_reply_to_status, in_reply_to_status);
+              this.tweets.push(tweet);
+            } else {
+              console.error(error);
+            }
+          });
+        } else {
+          this.tweets.push(tweet);
+        }
+      },
       sendTweet: function (params) {
         api.post('statuses/update', {
           status: params.text,
@@ -133,7 +160,7 @@ window.addEventListener('load',()=>{
               // catch some event
             } else {
               // status
-              this.tweets.push(data);
+              this.addTweet(data);
               if (this.isMentionsForYou(data)) {
                 this.createNotification("あなた宛のメンションがあります", data.text, data.user.profile_image_url_https, 'tweet');
               }
@@ -160,6 +187,18 @@ window.addEventListener('load',()=>{
             }
           });
         });
+      },
+      selectTweet: function (tweet) {
+        this.selectedTweet = tweet;
+      },
+      toggleSelectedTweet: function (tweet) {
+        if (this.isSelectedTweet(tweet))
+          this.selectedTweet = {}
+        else
+          this.selectTweet(tweet);
+      },
+      isSelectedTweet: function(tweet) {
+        return this.selectedTweet && this.selectedTweet.id_str == tweet.id_str;
       },
       favoriteTweet: function (tweet) {
         console.log(tweet.id_str);
@@ -232,7 +271,7 @@ window.addEventListener('load',()=>{
         })
       },
       contextMenuOnTweet: function(tweet) {
-        this.selectedTweet = tweet;
+        this.selectTweet(tweet);
         contextMenuForTweet.popup(remote.getCurrentWindow());
       },
       contextMenuOnImage: function() {
@@ -283,7 +322,7 @@ window.addEventListener('load',()=>{
       }
       console.log('tweets',tweets.map((t)=>t.text).join("\n"), tweets);
       tweets.forEach((tweet)=>{
-        vm.tweets.push(tweet);
+        vm.addTweet(tweet);
       });
     });
     vm.startStreaming();
