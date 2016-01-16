@@ -86,8 +86,6 @@
             <small-tweet v-if="body(tweet).in_reply_to_status && isSelectedTweet(tweet)"
                         :tweet="body(tweet).in_reply_to_status" :replysender="false">
             </small-tweet>
-            <div>
-              <span v-on:click="favoriteTweet(body(tweet))">
             <div class="infobar">
               <div class="favorite" v-on:click="favoriteTweet(body(tweet))">
                 <span v-if="body(tweet).favorited">🍣</span>
@@ -106,7 +104,6 @@
               </div>
             </div>
           </div>
-
         </li>
       </ul>
     </div>
