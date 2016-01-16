@@ -56,7 +56,10 @@
           </div>
 
           <div class="tweet_info">
-            <div>{{ body(tweet).user.name }} @{{ body(tweet).user.screen_name }}</div>
+            <div>
+              {{ body(tweet).user.name }} @{{ body(tweet).user.screen_name }}
+              <span v-if="body(tweet).in_reply_to_status">💬</span>
+            </div>
             <span>
               {{{ body(tweet).text | expand_url body(tweet).entities | twemoji }}}
             </span>
