@@ -123,7 +123,7 @@ input, textarea, keygen, select, button, isindex, datagrid {
   height: 48px;
   position: relative;
   overflow: hidden;
-  border-radius: 50%;
+  border-radius: 15%;
   margin-right: 0.5em;
 }
 
