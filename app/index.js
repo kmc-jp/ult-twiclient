@@ -231,7 +231,8 @@ window.addEventListener('load',()=>{
             api.post(retweet_url, {id: retweet_id}, (error, _tweet, response)=>{
               if (error) {
                 this.createNotification("ツイートをリツイート取り消しできませんでした", tweet.text, null, 'fail');
-                return console.log('error', error.map((e)=>e.message).join("\n"),  error);
+                console.log('error', error.map((e)=>e.message).join("\n"),  error);
+                return;
               }
               console.log(_tweet, response);
               this.createNotification("ツイートをリツイート取り消ししました", tweet.text, null, 'favorite');
@@ -242,7 +243,8 @@ window.addEventListener('load',()=>{
           api.post(retweet_url, {id: retweet_id}, (error, _tweet, response)=>{
             if (error) {
               this.createNotification("ツイートをリツイートできませんでした", tweet.text, null, 'fail');
-              return console.log('error', error.map((e)=>e.message).join("\n"),  error);
+              console.log('error', error.map((e)=>e.message).join("\n"),  error);
+              return;
             }
             console.log(_tweet, response);
             this.createNotification("ツイートをリツイートしました", tweet.text, null, 'favorite');
