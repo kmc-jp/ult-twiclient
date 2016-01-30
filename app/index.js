@@ -116,13 +116,14 @@ window.addEventListener('load',()=>{
         }
       },
       modifyScroll: function () {
-        let scrollTop = document.body.scrollTop;
-        let topTweetDOM = document.getElementsByTagName('li')[0];
-        if (!topTweetDOM || scrollTop < 2) {
+        const tweetsDOM = this.$els.tweets;
+        const scrollTop = tweetsDOM.scrollTop;
+        const topTweetDOM = tweetsDOM.firstElementChild;
+        const eps = 2;
+        if (!topTweetDOM || scrollTop < eps) {
           return;
         }
-        window.scrollTo(0, scrollTop + topTweetDOM.offsetHeight);
-        console.log(document.body.scrollTop);
+        tweetsDOM.scrollTop += topTweetDOM.clientHeight;
       },
       sendTweet: function (params) {
         api.post('statuses/update', {
