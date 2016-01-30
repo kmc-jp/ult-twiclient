@@ -17,33 +17,34 @@
   </template>
   <div id="container" v-on:keypress="detectKeyDown($event)" tabindex="-1">
 
-    <div id="topbar">
-      this is the ultimate twitter client !!!!
-      <a href="./preference.html">pref.</a>
-      <input type="text" v-model="newTweet.text" v-el:submit_box>
-      <button v-on:click="sendTweet(newTweet)" v-bind:disabled="isExceededTweet">
-        ツイート
-      </button>
-      <span v-bind:class="{ 'long_tweet': isLongTweet, 'exceeded_tweet': isExceededTweet }">
-        {{ calculateRemainChar }}
-      </span>
-      <button v-on:click="startStreaming()" v-bind:disabled="streaming">
-        ストリーミング
-      </button>
-      <small-tweet v-if="newTweet.in_reply_to_status_id"
-                  :tweet="sendReplyDestTweet" :replysender="true">
-      </small-tweet>
-    </div>
-
-    <div id="media_view" v-if="showingMediaType != ''" v-on:click="closeMedia()">
-      <img v-if="showingMediaType == 'photo'" v-bind:src="image.url" v-bind:width="image.width"
-           v-bind:height="image.height" v-on:contextmenu="contextMenuOnImage()">
-      <video controls autoplay loop v-if="showingMediaType == 'video'">
-        <source v-bind:src="video.url" v-bind:type="video.mimetype">
-      </video>
-    </div>
-
     <div id="outline">
+
+      <div id="topbar">
+        this is the ultimate twitter client !!!!
+        <a href="./preference.html">pref.</a>
+        <input type="text" v-model="newTweet.text" v-el:submit_box>
+        <button v-on:click="sendTweet(newTweet)" v-bind:disabled="isExceededTweet">
+          ツイート
+        </button>
+        <span v-bind:class="{ 'long_tweet': isLongTweet, 'exceeded_tweet': isExceededTweet }">
+          {{ calculateRemainChar }}
+        </span>
+        <button v-on:click="startStreaming()" v-bind:disabled="streaming">
+          ストリーミング
+        </button>
+        <small-tweet v-if="newTweet.in_reply_to_status_id"
+                    :tweet="sendReplyDestTweet" :replysender="true">
+        </small-tweet>
+      </div>
+
+      <div id="media_view" v-if="showingMediaType != ''" v-on:click="closeMedia()">
+        <img v-if="showingMediaType == 'photo'" v-bind:src="image.url" v-bind:width="image.width"
+             v-bind:height="image.height" v-on:contextmenu="contextMenuOnImage()">
+        <video controls autoplay loop v-if="showingMediaType == 'video'">
+          <source v-bind:src="video.url" v-bind:type="video.mimetype">
+        </video>
+      </div>
+
       <ul id="tweets">
         <li v-for="tweet in tweets | orderBy 'id' -1"
             v-bind:class="{
@@ -106,6 +107,7 @@
           </div>
         </li>
       </ul>
+
     </div>
 
     <div id="notifier">

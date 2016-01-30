@@ -1,31 +1,49 @@
+/*** reset css and font ***/
 @import url(http://fonts.googleapis.com/earlyaccess/notosansjapanese.css);
-
 body {
   margin: 0;
   font-family: 'Noto Sans Japanese', serif;
 }
-
 input, textarea, keygen, select, button, isindex, datagrid {
   font-family: inherit;
 }
+img.emoji {
+  height: 1em;
+  width: 1em;
+  margin: 0.05em 0.1em;
+  vertical-align: -0.1em;
+}
 
+/*** outline ***/
+#outline {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+}
+
+/*** top bar ***/
+#topbar {
+  background-color: #ddd;
+}
 .long_tweet {
   color: hsl(30, 100%, 55%);
 }
-
 .exceeded_tweet {
   color: hsl(0, 100%, 55%);
 }
 
+/*** time line ***/
 #tweets {
-  margin: 1em;
+  flex-grow: 1;
+  overflow-x: hidden;
+  overflow-y: always;
   -webkit-margin-before: 0;
   -webkit-margin-after: 0;
   -webkit-padding-start: 0;
 }
 #tweets li {
   background-color: hsl(188, 100%, 88%);
-  width: 100%;
   font-size: 10pt;
   list-style-type: none;
   margin: 2px 3px;
@@ -33,52 +51,44 @@ input, textarea, keygen, select, button, isindex, datagrid {
   display: flex;
   flex-direction: row;
 }
-
 #tweets li.selected {
   background-color: hsl(188, 100%, 77%);
 }
-
 #tweets li.retweeted_status {
   background-color: hsl(100, 100%, 88%);
 }
-
 #tweets li.retweeted_status.selected {
   background-color: hsl(100, 100%, 77%);
 }
-
 #tweets li.with_photo_thumbnails {
   min-height: 160px;
 }
-
 #tweets li.mentions_for_you {
   background-color: hsl(0, 100%, 88%);
 }
-
 #tweets li.mentions_for_you.selected {
   background-color: hsl(0, 100%, 77%);
 }
-
-
 #tweets .tweet_info {
   width: 100%;
 }
 
+/*** url ***/
 .url {
   color: hsl(10, 100%, 50%);
   text-decoration: underline;
   cursor: pointer;
 }
-
 .url:hover {
   color: hsl(10, 100%, 20%);
 }
 
+/*** thumbnail ***/
 .photo_thumbnail {
   width: 80px;
   height: 80px;
   cursor: zoom-in;
 }
-
 .video_thumbnail {
   display: block;
   z-index: 0;
@@ -87,7 +97,6 @@ input, textarea, keygen, select, button, isindex, datagrid {
   height: 80px;
   cursor: zoom-in;
 }
-
 .video_thumbnail .play_icon {
   background-color: hsla(360, 100%, 0%, 0.5);
   width: 80px;
@@ -98,6 +107,24 @@ input, textarea, keygen, select, button, isindex, datagrid {
   transform: translate(-50%, -50%);
 }
 
+/*** info bar ***/
+.infobar {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.spacing {
+  flex-grow: 1;
+}
+.via,.created_at {
+  margin-left: 1ex;
+}
+
+.favorite {
+  cursor: pointer;
+}
+
+/*** media view ***/
 #media_view {
   position: fixed;
   z-index: 1;
@@ -108,7 +135,6 @@ input, textarea, keygen, select, button, isindex, datagrid {
   background-color: rgba(0, 0, 0, 0.6);
   cursor: zoom-out;
 }
-
 #media_view img, #media_view video {
   position: absolute;
   top: 50%;
@@ -117,33 +143,18 @@ input, textarea, keygen, select, button, isindex, datagrid {
   cursor: default;
 }
 
+/*** small tweet ***/
 .user_icon {
   height: 100%;
   min-height: inherit;
   margin-right: 0.5em;
 }
-
 .small_user_icon {
   width: 16px;
   height: 16px;
 }
 
-#topbar {
-  position: fixed;
-  top: 0;
-  z-index: 2;
-  background-color: #ddd;
-  width: 100%;
-  height: 75px;
-}
-
-#notifier_bar {
-  width: 100%;
-  height: 2em;
-  position: absolute;
-  bottom: 0;
-}
-
+/*** notifier ***/
 .notification {
   background-color: hsl(30, 100%, 50%);
   width: 100%;
@@ -152,49 +163,16 @@ input, textarea, keygen, select, button, isindex, datagrid {
   bottom: -1.5em;
   -webkit-animation: show_notifier 0.5s forwards;
 }
-
 .notification.favorite {
   background-color: hsl(60, 100%, 50%);
 }
-
 .notification.follow {
   background-color: hsl(200, 100%, 50%);
 }
-
 .notification.fail {
   background-color: hsl(360, 100%, 60%);
 }
-
 @-webkit-keyframes show_notifier {
   0% { bottom: -1.5em; }
   100% { bottom: 0; }
-}
-
-#outline {
-  margin-top: 75px;
-}
-
-.infobar {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-}
-
-.spacing {
-  flex-grow: 1;
-}
-
-.via,.created_at {
-  margin-left: 1ex;
-}
-
-.favorite {
-  cursor: pointer;
-}
-
-img.emoji {
-  height: 1em;
-  width: 1em;
-  margin: 0.05em 0.1em;
-  vertical-align: -0.1em;
 }
