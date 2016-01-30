@@ -45,7 +45,7 @@
         </video>
       </div>
 
-      <ul id="tweets">
+      <ul id="tweets" v-el:tweets>
         <li v-for="tweet in tweets | orderBy 'id' -1"
             v-bind:class="{
               'retweeted_status': tweet.retweeted_status,

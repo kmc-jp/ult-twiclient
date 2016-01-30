@@ -105,13 +105,25 @@ window.addEventListener('load',()=>{
               _tweet.in_reply_to_status = {};
               Object.assign(_tweet.in_reply_to_status, in_reply_to_status);
               this.tweets.push(tweet);
+              this.modifyScroll();
             } else {
               console.error(error);
             }
           });
         } else {
           this.tweets.push(tweet);
+          this.modifyScroll();
         }
+      },
+      modifyScroll: function () {
+        const tweetsDOM = this.$els.tweets;
+        const scrollTop = tweetsDOM.scrollTop;
+        const topTweetDOM = tweetsDOM.firstElementChild;
+        const eps = 2;
+        if (!topTweetDOM || scrollTop < eps) {
+          return;
+        }
+        tweetsDOM.scrollTop += topTweetDOM.clientHeight;
       },
       sendTweet: function (params) {
         api.post('statuses/update', {
