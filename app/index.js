@@ -207,7 +207,7 @@ window.addEventListener('load',()=>{
         var favorites_id = tweet.retweeted_status ? tweet.retweeted_status.id_str : tweet.id_str
         api.post(favorites_url, {id: favorites_id}, (error, _tweet, response)=>{
           if (error) {
-            this.createNotification("ツイートをふぁぼに失敗しました。", tweet.text, null, 'fail');
+            this.createNotification("ツイートのふぁぼに失敗しました。", tweet.text, null, 'fail');
             return console.log('error', error.map((e)=>e.message).join("\n"),  error);
           }
           console.log(_tweet, response);
