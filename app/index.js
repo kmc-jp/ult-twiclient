@@ -236,7 +236,9 @@ window.addEventListener('load',()=>{
               }
               console.log(_tweet, response);
               this.createNotification("ツイートをリツイート取り消ししました", tweet.text, null, 'favorite');
-              Object.assign(tweet, _tweet);
+              //Object.assign(tweet, _tweet);
+              tweet.retweeted = false;
+              tweet.retweeted_count = _tweet.retweeted_count;
             });
           });
         } else {
@@ -248,7 +250,9 @@ window.addEventListener('load',()=>{
             }
             console.log(_tweet, response);
             this.createNotification("ツイートをリツイートしました", tweet.text, null, 'favorite');
-            Object.assign(tweet, _tweet);
+            //Object.assign(tweet, _tweet);
+            tweet.retweeted = true;
+            tweet.retweeted_count = _tweet.retweeted_count;
           });
         }
       },
