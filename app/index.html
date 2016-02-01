@@ -46,7 +46,7 @@
       </div>
 
       <ul id="tweets" v-el:tweets>
-        <li v-for="tweet in tweets | orderBy 'id' -1"
+        <li v-for="tweet in tweets"
             v-bind:class="{
               'retweeted_status': tweet.retweeted_status,
               'mentions_for_you': isMentionsForYou(tweet),
