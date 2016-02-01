@@ -99,7 +99,7 @@ window.addEventListener('load',()=>{
       addTweet: function (tweet) {
         let _tweet = this.body(tweet);
         if (tweet.user.screen_name == this.me.screen_name && tweet.retweeted_status) {
-          return;
+          _tweet.retweeted = true;
         }
         if (_tweet.in_reply_to_status_id_str) {
           api.get('statuses/show', {id: _tweet.in_reply_to_status_id_str},
