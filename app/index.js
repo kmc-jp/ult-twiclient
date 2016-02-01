@@ -115,8 +115,8 @@ window.addEventListener('load',()=>{
       },
       insertToTweets: function (tweet) {
         let i = 0;
-        for(;i<this,tweets.length;i++){
-          if(tweets[i].id<tweet.id)break;
+        for(;i<this.tweets.length;i++){
+          if(this.tweets[i].id<tweet.id)break;
         }
         this.tweets.splice(i,0,tweet);
         const MAX_TWEETS = 300;
