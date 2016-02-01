@@ -10,7 +10,8 @@
     "request": "^2.65.0",
     "twitter": "^1.2.5",
     "twitter-text": "^1.13.2",
-    "vue": "^1.0.13"
+    "vue": "^1.0.13",
+    "yargs": "^3.32.0"
   },
   "devDependencies": {
     "electron-compilers": "^1.0.0",
