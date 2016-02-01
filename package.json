@@ -6,6 +6,7 @@
   "dependencies": {
     "electron-compile": "^1.0.0",
     "flutter": "0.0.5",
+    "jasmine": "^2.4.1",
     "node-twitter-api": "^1.6.1",
     "request": "^2.65.0",
     "twitter": "^1.2.5",
