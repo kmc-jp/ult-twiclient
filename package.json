@@ -22,7 +22,7 @@
   "scripts": {
     "start": "electron .",
     "build": "electron-packager . ult-twiclient --platform=win32 --arch=all --version=0.33.0 --overwrite --out=build --asar",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "electron . --test"
   },
   "repository": {
     "type": "git",
