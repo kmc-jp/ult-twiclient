@@ -1,5 +1,8 @@
 describe("Basic", function(){
-  it("tests electron-jasmine", function(){
-    expect(1+1).toBe(2);
+  it("checks whether tweet button is disabled when over 140 characters", function(){
+    var tweetBox = document.getElementById('tweet-box');
+    var tweetButton = document.getElementById('tweet-button');
+    tweetBox.setAttribute('value', 'a'.repeat(141));
+    expect(tweetButton.getAttribute('disabled')).toBeTruthy();
   });
 });
