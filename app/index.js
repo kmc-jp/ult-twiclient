@@ -104,16 +104,26 @@ window.addEventListener('load',()=>{
             if (!error){
               _tweet.in_reply_to_status = {};
               Object.assign(_tweet.in_reply_to_status, in_reply_to_status);
-              this.tweets.push(tweet);
-              this.modifyScroll();
+              this.insertToTweets(tweet);
             } else {
               console.error(error);
             }
           });
         } else {
-          this.tweets.push(tweet);
-          this.modifyScroll();
+          this.insertToTweets(tweet);
         }
+      },
+      insertToTweets: function (tweet) {
+        let i = 0;
+        for(;i<this.tweets.length;i++){
+          if(this.tweets[i].id<tweet.id)break;
+        }
+        this.tweets.splice(i,0,tweet);
+        const MAX_TWEETS = 300;
+        if(this.tweets.length>MAX_TWEETS){
+          this.tweets.splice(MAX_TWEETS, this.tweets.length - MAX_TWEETS);
+        }
+        this.modifyScroll();
       },
       modifyScroll: function () {
         const tweetsDOM = this.$els.tweets;
