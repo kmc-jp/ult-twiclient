@@ -87,7 +87,11 @@ window.addEventListener('load',()=>{
     },
     computed: {
       calculateRemainChar: function() {
-        return this.maxTweetLength - twttr.txt.getTweetLength(this.newTweet.text);
+        if (!this.newTweet.shortenURL) {
+          return this.maxTweetLength - this.newTweet.text.length;
+        } else {
+          return this.maxTweetLength - twttr.txt.getTweetLength(this.newTweet.text);
+        }
       },
       isLongTweet: function() {
         return this.borderOfLongTweet > this.calculateRemainChar;
