@@ -70,7 +70,7 @@ window.addEventListener('load',()=>{
       newTweet: {
         text: "",
         in_reply_to_status_id: "",
-        shortenURL: true
+        disableShortenURL: false
       },
       selectedTweet: {},
       sendReplyDestTweet: {},
@@ -87,7 +87,7 @@ window.addEventListener('load',()=>{
     },
     computed: {
       calculateRemainChar: function() {
-        if (!this.newTweet.shortenURL) {
+        if (this.newTweet.disableShortenURL) {
           return this.maxTweetLength - this.newTweet.text.length;
         } else {
           return this.maxTweetLength - twttr.txt.getTweetLength(this.newTweet.text);

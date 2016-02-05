@@ -29,7 +29,7 @@
         <span v-bind:class="{ 'long_tweet': isLongTweet, 'exceeded_tweet': isExceededTweet }">
           {{ calculateRemainChar }}
         </span>
-        <input type="checkbox" v-model="!newTweet.shortenURL">文字列をURLとして扱わないようにする
+        <input type="checkbox" v-model="newTweet.disableShortenURL">文字列をURLとして扱うようにする
         <button v-on:click="startStreaming()" v-bind:disabled="streaming">
           ストリーミング
         </button>
