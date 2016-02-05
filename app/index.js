@@ -69,7 +69,8 @@ window.addEventListener('load',()=>{
     data: {
       newTweet: {
         text: "",
-        in_reply_to_status_id: ""
+        in_reply_to_status_id: "",
+        shortenURL: true
       },
       selectedTweet: {},
       sendReplyDestTweet: {},
@@ -136,6 +137,9 @@ window.addEventListener('load',()=>{
         tweetsDOM.scrollTop += topTweetDOM.clientHeight;
       },
       sendTweet: function (params) {
+        if (!this.newTweet.shortenURL) {
+          params.text = params.text.replace('.', '​.');
+        }
         api.post('statuses/update', {
           status: params.text,
           in_reply_to_status_id: params.in_reply_to_status_id
