@@ -69,7 +69,8 @@ window.addEventListener('load',()=>{
     data: {
       newTweet: {
         text: "",
-        in_reply_to_status_id: ""
+        in_reply_to_status_id: "",
+        disableShortenURL: false
       },
       selectedTweet: {},
       sendReplyDestTweet: {},
@@ -86,7 +87,11 @@ window.addEventListener('load',()=>{
     },
     computed: {
       calculateRemainChar: function() {
-        return this.maxTweetLength - twttr.txt.getTweetLength(this.newTweet.text);
+        if (this.newTweet.disableShortenURL) {
+          return this.maxTweetLength - this.newTweet.text.length;
+        } else {
+          return this.maxTweetLength - twttr.txt.getTweetLength(this.newTweet.text);
+        }
       },
       isLongTweet: function() {
         return this.borderOfLongTweet > this.calculateRemainChar;
@@ -136,6 +141,9 @@ window.addEventListener('load',()=>{
         tweetsDOM.scrollTop += topTweetDOM.clientHeight;
       },
       sendTweet: function (params) {
+        if (!this.newTweet.shortenURL) {
+          params.text = params.text.replace('.', '​.');
+        }
         api.post('statuses/update', {
           status: params.text,
           in_reply_to_status_id: params.in_reply_to_status_id
