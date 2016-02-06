@@ -1,0 +1,42 @@
+{
+  "rules": {
+    "indent": [
+      2,2
+    ],
+    "no-console": 0,
+    "no-extra-parens": 2,
+    "no-unexpected-multiline": 2,
+    "dot-notation": 2,
+    "curly": 2,
+    "no-alert": 2,
+    "no-debugger": 2,
+    "semi": 2,
+
+    "arrow-parens": 2,
+    "arrow-spacing": 2,
+    "constructor-super": 2,
+    "generator-star-spacing": 2,
+    "no-class-assign": 2,
+    "no-const-assign": 2,
+    "no-dupe-class-members": 2,
+    "no-empty-pattern": 2,
+    "no-this-before-super": 2,
+    "no-var": 2,
+    "object-shorthand": 2,
+    "prefer-arrow-callback": 2,
+    "prefer-const": 2,
+    "prefer-reflect": 2,
+    "prefer-spread": 2,
+    "prefer-template": 2,
+    "require-yield": 2
+  },
+  "ecmaFeatures": {
+    "modules": true,
+  },
+  "env": {
+    "es6": true,
+    "browser": true
+  },
+  "extends": "eslint:recommended",
+  "global": ["require"]
+}

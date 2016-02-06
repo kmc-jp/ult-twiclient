@@ -15,12 +15,13 @@
   "devDependencies": {
     "electron-compilers": "^1.0.0",
     "electron-packager": "^5.1.0",
-    "electron-prebuilt": "^0.36.0"
+    "electron-prebuilt": "^0.36.0",
+    "eslint": "^1.10.3"
   },
   "scripts": {
     "start": "electron .",
     "build": "electron-packager . ult-twiclient --platform=win32 --arch=all --version=0.33.0 --overwrite --out=build --asar",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "eslint **/*.js"
   },
   "repository": {
     "type": "git",
