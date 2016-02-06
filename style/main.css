@@ -120,7 +120,7 @@ img.emoji {
   margin-left: 1ex;
 }
 
-.favorite {
+.favorite,.retweet {
   cursor: pointer;
 }
 

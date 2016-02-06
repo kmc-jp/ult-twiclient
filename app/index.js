@@ -98,6 +98,9 @@ window.addEventListener('load',()=>{
     methods: {
       addTweet: function (tweet) {
         let _tweet = this.body(tweet);
+        if (tweet.user.screen_name == this.me.screen_name && tweet.retweeted_status) {
+          _tweet.retweeted = true;
+        }
         if (_tweet.in_reply_to_status_id_str) {
           api.get('statuses/show', {id: _tweet.in_reply_to_status_id_str},
             (error, in_reply_to_status, response)=>{
@@ -239,6 +242,37 @@ window.addEventListener('load',()=>{
             this.createNotification("ツイートをふぁぼりました。", tweet.text, null, 'favorite');
           Object.assign(tweet, _tweet);
         });
+      },
+      retweetTweet: function (tweet) {
+        console.log(tweet.id_str);
+        var retweet_url = tweet.retweeted ? 'statuses/destroy' : 'statuses/retweet';
+        var retweet_id = tweet.id_str;
+        if (tweet.retweeted) {
+          api.get('statuses/show', {id: tweet.id_str, include_my_retweet: 1}, (error, _tweet, response)=>{
+            retweet_id = _tweet.current_user_retweet.id_str;
+            api.post(retweet_url, {id: retweet_id}, (error, _tweet, response)=>{
+              if (error) {
+                this.createNotification("ツイートをリツイート取り消しできませんでした", tweet.text, null, 'fail');
+                console.log('error', error.map((e)=>e.message).join("\n"),  error);
+                return;
+              }
+              console.log(_tweet, response);
+              this.createNotification("ツイートをリツイート取り消ししました", tweet.text, null, 'favorite');
+              Object.assign(tweet, _tweet.retweeted_status);
+            });
+          });
+        } else {
+          api.post(retweet_url, {id: retweet_id}, (error, _tweet, response)=>{
+            if (error) {
+              this.createNotification("ツイートをリツイートできませんでした", tweet.text, null, 'fail');
+              console.log('error', error.map((e)=>e.message).join("\n"),  error);
+              return;
+            }
+            console.log(_tweet, response);
+            this.createNotification("ツイートをリツイートしました", tweet.text, null, 'favorite');
+            Object.assign(tweet, _tweet.retweeted_status);
+          });
+        }
       },
       showImage: function(url, size) {
         this.image = {url: url, width: size.w, height: size.h};
