@@ -85,6 +85,10 @@ img.emoji {
 
 /*** thumbnail ***/
 .photo_thumbnail {
+  display: inline-block;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
   width: 80px;
   height: 80px;
   cursor: zoom-in;
