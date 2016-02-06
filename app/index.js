@@ -6,6 +6,7 @@ const clipboard = require('electron').clipboard;
 const dialog = remote.dialog;
 const path = require('path');
 const Vue = require('vue');
+Vue.config.debug = true;
 require('twitter-text');
 var setting = JSON.parse(localStorage["ulttwiclient"] || '{}');
 console.log(setting.tokens);
