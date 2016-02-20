@@ -40,5 +40,6 @@
     "require": true,
     "twemoji": true,
     "twttr": true,
+    "oauth": true,
   }
 }
