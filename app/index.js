@@ -56,16 +56,16 @@ window.addEventListener('load',()=>{
   });
   // context menu on status
   const contextMenuForTweet = Menu.buildFromTemplate([
-    {label: "ツイートに返信する", click: ()=>{vm.sendReply(vm.selectedTweet);}},
-    {label: "ツイートをふぁぼる", click: ()=>{vm.favoriteTweet(vm.selectedTweet);}},
+    {label: "Reply to this tweet", click: ()=>{vm.sendReply(vm.selectedTweet);}},
+    {label: "Favorite this tweet", click: ()=>{vm.favoriteTweet(vm.selectedTweet);}},
     {type: 'separator'},
-    {label: "ツイートをブラウザで開く", click: ()=>{clipboard.writeText(vm.jumpToTwitterURL(vm.selectedTweet));}},
-    {label: "ツイートのURLを取得", click: ()=>{clipboard.writeText(vm.createTwitterURL(vm.selectedTweet));}},
-    {label: "ツイートのJSONを取得", click: ()=>{clipboard.writeText(JSON.stringify(vm.selectedTweet));}}
+    {label: "Open tweet with Browzer", click: ()=>{clipboard.writeText(vm.jumpToTwitterURL(vm.selectedTweet));}},
+    {label: "Get tweet URL", click: ()=>{clipboard.writeText(vm.createTwitterURL(vm.selectedTweet));}},
+    {label: "Get tweet JSON", click: ()=>{clipboard.writeText(JSON.stringify(vm.selectedTweet));}}
   ]);
   // context menu on image
   const contextMenuForImage = Menu.buildFromTemplate([
-    {label: "名前を付けて画像を保存", click: ()=>{vm.saveImage();}}
+    {label: "Save image file", click: ()=>{vm.saveImage();}}
   ]);
   const vm = new Vue({
     el: "#container",
@@ -148,11 +148,11 @@ window.addEventListener('load',()=>{
           in_reply_to_status_id: params.in_reply_to_status_id
         }, (error, tweet, response)=>{
           if (error) {
-            this.createNotification("ツイートの投稿に失敗しました。", this.newTweet.text, null, 'fail');
+            this.createNotification("Failed to send tweet", this.newTweet.text, null, 'fail');
             return console.log('error', error.map((e)=>e.message).join("\n"),  error);
           }
           console.log(tweet, response);
-          this.createNotification("ツイートが投稿されました。", this.newTweet.text, null, 'tweet');
+          this.createNotification("Sent tweet", this.newTweet.text, null, 'tweet');
           this.newTweet.text = '';
           this.newTweet.in_reply_to_status_id = '';
           this.sendReplyDestTweet = {};
@@ -192,28 +192,28 @@ window.addEventListener('load',()=>{
               // status
               this.addTweet(data);
               if (this.isMentionsForYou(data)) {
-                this.createNotification(`${data.user.name} さんからあなた宛のメンションがあります。`, data.text, data.user.profile_image_url_https, 'tweet');
+                this.createNotification(`${data.user.name} mentioned to your tweet`, data.text, data.user.profile_image_url_https, 'tweet');
               }
             }
           });
           stream.on('favorite', (data)=>{
             if (data.target.screen_name === this.me.screen_name) {
-              this.createNotification(`あなたのツイートが ${data.source.name} にふぁぼられました。`, data.target_object.text, data.target.profile_image_url_https, 'favorite');
+              this.createNotification(`Your tweet was favorited by ${data.source.name} `, data.target_object.text, data.target.profile_image_url_https, 'favorite');
             }
           });
           stream.on('unfavorite', (data)=>{
             if (data.target.screen_name === this.me.screen_name) {
-              this.createNotification(`あなたのツイートが ${data.source.name} にふぁぼを取り消されました。`, data.target_object.text, data.target.profile_image_url_https, 'unfavorite');
+              this.createNotification(`Your tweet was unfavorited by ${data.source.name} `, data.target_object.text, data.target.profile_image_url_https, 'unfavorite');
             }
           });
           stream.on('follow', (data)=>{
             if (data.target.screen_name === this.me.screen_name) {
-              this.createNotification(`${data.source.name} さんにフォローされました。`, data.source.description, data.source.profile_image_url_https, 'follow');
+              this.createNotification(`${data.source.name} followed you.`, data.source.description, data.source.profile_image_url_https, 'follow');
             }
           });
           stream.on('list_member_added', (data)=>{
             if (data.target.screen_name === this.me.screen_name) {
-              this.createNotification(`${data.source.name} さんにリスト ${data.target_object.name} に追加されました。`, data.target_object.description, data.source.profile_image_url_https, 'list_member_added');
+              this.createNotification(`${data.source.name} added you to the list ${data.target_object.name} `, data.target_object.description, data.source.profile_image_url_https, 'list_member_added');
             }
           });
         });
@@ -237,14 +237,14 @@ window.addEventListener('load',()=>{
         const favorites_id = tweet.retweeted_status ? tweet.retweeted_status.id_str : tweet.id_str;
         api.post(favorites_url, {id: favorites_id}, (error, _tweet, response)=>{
           if (error) {
-            this.createNotification("ツイートのふぁぼに失敗しました。", tweet.text, null, 'fail');
+            this.createNotification("Failed to favorite tweet", tweet.text, null, 'fail');
             return console.log('error', error.map((e)=>e.message).join("\n"),  error);
           }
           console.log(_tweet, response);
           if (tweet.favorited){
-            this.createNotification("ツイートのふぁぼを取り消しました。", tweet.text, null, 'unfavorite');
+            this.createNotification("Unfavorited the tweet", tweet.text, null, 'unfavorite');
           }else{
-            this.createNotification("ツイートをふぁぼりました。", tweet.text, null, 'favorite');
+            this.createNotification("Favorite the tweet", tweet.text, null, 'favorite');
           }
           Object.assign(tweet, _tweet);
         });
@@ -258,24 +258,24 @@ window.addEventListener('load',()=>{
             retweet_id = _tweet.current_user_retweet.id_str;
             api.post(retweet_url, {id: retweet_id}, (error, _tweet, response)=>{
               if (error) {
-                this.createNotification("ツイートをリツイート取り消しできませんでした", tweet.text, null, 'fail');
+                this.createNotification("Failed to taking back Retweet", tweet.text, null, 'fail');
                 console.log('error', error.map((e)=>e.message).join("\n"),  error);
                 return;
               }
               console.log(_tweet, response);
-              this.createNotification("ツイートをリツイート取り消ししました", tweet.text, null, 'favorite');
+              this.createNotification("Took back Retweet", tweet.text, null, 'favorite');
               Object.assign(tweet, _tweet.retweeted_status);
             });
           });
         } else {
           api.post(retweet_url, {id: retweet_id}, (error, _tweet, response)=>{
             if (error) {
-              this.createNotification("ツイートをリツイートできませんでした", tweet.text, null, 'fail');
+              this.createNotification("Failed to Retweet", tweet.text, null, 'fail');
               console.log('error', error.map((e)=>e.message).join("\n"),  error);
               return;
             }
             console.log(_tweet, response);
-            this.createNotification("ツイートをリツイートしました", tweet.text, null, 'favorite');
+            this.createNotification("Retweeted the tweet", tweet.text, null, 'favorite');
             Object.assign(tweet, _tweet.retweeted_status);
           });
         }
@@ -364,7 +364,7 @@ window.addEventListener('load',()=>{
         const defaultPath = path.dirname(require.main.filename) + basename;
         dialog.showSaveDialog({defaultPath}, (filename)=>{
           require('request')(this.image.url).pipe(require('fs').createWriteStream(filename)).on('close', ()=>{
-            this.createNotification('画像の保存に成功しました。', basename, null, 'success');
+            this.createNotification('Saved image', basename, null, 'success');
           });
         });
       },
