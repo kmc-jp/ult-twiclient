@@ -1,2 +1,2 @@
 require('electron-compile').init();
-require('./main')
+require('./main');
